@@ -18,6 +18,7 @@ public class MealService {
         return mealDAO.selectAllMeals();
     }
 
+
     public Meals selectMealById(Integer id){
         return mealDAO.selectMealById(id);
 
@@ -26,6 +27,13 @@ public class MealService {
     public void insertMeal(Meals meals) {
         mealDAO.insertMeal(meals);
 
+    }
+
+
+
+    public void deleteMeal(Integer id) {
+
+        mealDAO.deleteMeals(id);
     }
 
 }

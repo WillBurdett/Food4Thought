@@ -1,7 +1,13 @@
 package com.will.Food4Thought.meal;
 
 
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 
@@ -28,5 +34,10 @@ public class MealController {
          mealService.insertMeal(meals);
     }
 
+
+    @DeleteMapping(path = "meals/{id}")
+    public void deleteMealById(@PathVariable("id") Integer mealId) {
+        mealService.deleteMeal(mealId);
+    }
 
 }
