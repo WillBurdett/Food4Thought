@@ -1,5 +1,6 @@
 package com.will.Food4Thought.meal;
 
+import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
 
 import java.util.List;
@@ -8,17 +9,29 @@ import java.util.Objects;
 public class Meals {
     private Integer id;
     private String name;
+    private Difficulty difficulty;
     private String allergyInfo;
     private List<String> ingredients;
-    private List<String> steps;
+    private String steps;
     private MealTime mealTime;
 
     public Meals() {
     }
 
-    public Meals(String name, String allergyInfo, List<String> ingredients, List<String> steps, MealTime mealTime) {
+    public Meals(String name, Difficulty difficulty, String allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
         this.id = null;
         this.name = name;
+        this.difficulty = difficulty;
+        this.allergyInfo = allergyInfo;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.mealTime = mealTime;
+    }
+
+    public Meals(Integer id, String name, Difficulty difficulty, String allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
+        this.id = id;
+        this.name = name;
+        this.difficulty = difficulty;
         this.allergyInfo = allergyInfo;
         this.ingredients = ingredients;
         this.steps = steps;
@@ -41,6 +54,14 @@ public class Meals {
         this.name = name;
     }
 
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public String getAllergyInfo() {
         return allergyInfo;
     }
@@ -57,11 +78,11 @@ public class Meals {
         this.ingredients = ingredients;
     }
 
-    public List<String> getSteps() {
+    public String getSteps() {
         return steps;
     }
 
-    public void setSteps(List<String> steps) {
+    public void setSteps(String steps) {
         this.steps = steps;
     }
 
@@ -75,42 +96,35 @@ public class Meals {
 
     @Override
     public String toString() {
-        return "meal{" +
+        return "Meals{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", difficulty=" + difficulty +
                 ", allergyInfo='" + allergyInfo + '\'' +
                 ", ingredients=" + ingredients +
-                ", steps=" + steps +
+                ", steps='" + steps + '\'' +
                 ", mealTime=" + mealTime +
                 '}';
     }
 
-    public String toCSVIngredients(){
+    public String toStringCSV(){
         String output = "";
-        for (String i : ingredients) {
-            output+= i + ",";
+        for (String ingredient : ingredients) {
+            output+= ingredient + ",";
         }
-        return output.substring(0, output.length()-1);
-    }
-
-    public String toCSVSteps(){
-        String output = "";
-        for (String i : steps) {
-            output+= i + ",";
-        }
-        return output.substring(0, output.length()-1);
+        return output.substring(0, output.length() - 1);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Meals meal = (Meals) o;
-        return Objects.equals(id, meal.id) && Objects.equals(name, meal.name) && Objects.equals(allergyInfo, meal.allergyInfo) && Objects.equals(ingredients, meal.ingredients) && Objects.equals(steps, meal.steps) && mealTime == meal.mealTime;
+        Meals meals = (Meals) o;
+        return Objects.equals(id, meals.id) && Objects.equals(name, meals.name) && difficulty == meals.difficulty && Objects.equals(allergyInfo, meals.allergyInfo) && Objects.equals(ingredients, meals.ingredients) && Objects.equals(steps, meals.steps) && mealTime == meals.mealTime;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, allergyInfo, ingredients, steps, mealTime);
+        return Objects.hash(id, name, difficulty, allergyInfo, ingredients, steps, mealTime);
     }
 }
