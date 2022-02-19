@@ -3,6 +3,7 @@ package com.will.Food4Thought.meal;
 import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.chef.Chef;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,11 +16,13 @@ public class Meals {
     private List<String> ingredients;
     private String steps;
     private MealTime mealTime;
+    private List<Chef> chefs;
 
     public Meals() {
     }
 
-    public Meals(String name, Difficulty difficulty, List<Allergies> allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
+    public Meals(String name, Difficulty difficulty, List<Allergies> allergyInfo, List<String> ingredients, String steps, MealTime mealTime, List<Chef> chefs) {
+        this.chefs = chefs;
         this.id = null;
         this.name = name;
         this.difficulty = difficulty;
@@ -29,7 +32,7 @@ public class Meals {
         this.mealTime = mealTime;
     }
 
-    public Meals(Integer id, String name, Difficulty difficulty, List<Allergies> allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
+    public Meals(Integer id, String name, Difficulty difficulty, List<Allergies> allergyInfo, List<String> ingredients, String steps, MealTime mealTime, List<Chef> chefs) {
         this.id = id;
         this.name = name;
         this.difficulty = difficulty;
@@ -37,6 +40,7 @@ public class Meals {
         this.ingredients = ingredients;
         this.steps = steps;
         this.mealTime = mealTime;
+        this.chefs = chefs;
     }
 
     public Integer getId() {
@@ -95,6 +99,14 @@ public class Meals {
         this.mealTime = mealTime;
     }
 
+    public List<Chef> getChefs() {
+        return chefs;
+    }
+
+    public void setChefs(List<Chef> chefs) {
+        this.chefs = chefs;
+    }
+
     @Override
     public String toString() {
         return "Meals{" +
@@ -105,6 +117,7 @@ public class Meals {
                 ", ingredients=" + ingredients +
                 ", steps='" + steps + '\'' +
                 ", mealTime=" + mealTime +
+                ", chefs=" + chefs +
                 '}';
     }
 
@@ -120,6 +133,14 @@ public class Meals {
         String output = "";
         for (Allergies allergy : allergyInfo) {
             output+= allergy + ",";
+        }
+        return output.substring(0, output.length() - 1);
+    }
+
+    public String chefToCSV(){
+        String output = "";
+        for (Chef c : chefs) {
+            output+= c + ",";
         }
         return output.substring(0, output.length() - 1);
     }
