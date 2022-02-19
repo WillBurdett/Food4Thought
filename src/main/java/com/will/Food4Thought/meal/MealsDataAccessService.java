@@ -28,18 +28,8 @@ public class MealsDataAccessService implements MealDAO{
                 SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
                 FROM meals;
                 """;
-       return jdbcTemplate.query(sql, (rs, i) -> {
 
-           return new Meals(rs.getInt("id"),
-                   rs.getString("name"),
-                   Difficulty.valueOf(rs.getString("difficulty").toUpperCase()),
-                   allergies(rs.getString("allergy_info")),
-                   Arrays.asList((rs.getString("ingredients").split(","))),
-                   rs.getString("steps"),
-                   MealTime.valueOf(rs.getString("meal_time").toUpperCase()),
-                   null
-           );
-       });
+        return jdbcTemplate.query(sql, new RowMapper());
     }
 
     public static List<Allergies> allergies(String input){
