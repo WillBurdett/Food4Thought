@@ -1,5 +1,6 @@
 package com.will.Food4Thought.meal;
 
+import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
 
@@ -10,7 +11,7 @@ public class Meals {
     private Integer id;
     private String name;
     private Difficulty difficulty;
-    private String allergyInfo;
+    private List<Allergies> allergyInfo;
     private List<String> ingredients;
     private String steps;
     private MealTime mealTime;
@@ -18,7 +19,7 @@ public class Meals {
     public Meals() {
     }
 
-    public Meals(String name, Difficulty difficulty, String allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
+    public Meals(String name, Difficulty difficulty, List<Allergies> allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
         this.id = null;
         this.name = name;
         this.difficulty = difficulty;
@@ -28,7 +29,7 @@ public class Meals {
         this.mealTime = mealTime;
     }
 
-    public Meals(Integer id, String name, Difficulty difficulty, String allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
+    public Meals(Integer id, String name, Difficulty difficulty, List<Allergies> allergyInfo, List<String> ingredients, String steps, MealTime mealTime) {
         this.id = id;
         this.name = name;
         this.difficulty = difficulty;
@@ -62,11 +63,11 @@ public class Meals {
         this.difficulty = difficulty;
     }
 
-    public String getAllergyInfo() {
+    public List<Allergies> getAllergyInfo() {
         return allergyInfo;
     }
 
-    public void setAllergyInfo(String allergyInfo) {
+    public void setAllergyInfo(List<Allergies> allergyInfo) {
         this.allergyInfo = allergyInfo;
     }
 
@@ -100,17 +101,25 @@ public class Meals {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", difficulty=" + difficulty +
-                ", allergyInfo='" + allergyInfo + '\'' +
+                ", allergyInfo=" + allergyInfo +
                 ", ingredients=" + ingredients +
                 ", steps='" + steps + '\'' +
                 ", mealTime=" + mealTime +
                 '}';
     }
 
-    public String toStringCSV(){
+    public String ingredientsToCSV(){
         String output = "";
         for (String ingredient : ingredients) {
             output+= ingredient + ",";
+        }
+        return output.substring(0, output.length() - 1);
+    }
+
+    public String allergiesToCSV(){
+        String output = "";
+        for (Allergies allergy : allergyInfo) {
+            output+= allergy + ",";
         }
         return output.substring(0, output.length() - 1);
     }
