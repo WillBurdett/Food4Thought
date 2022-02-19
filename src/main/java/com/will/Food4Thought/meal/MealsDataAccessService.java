@@ -56,7 +56,12 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public Meals selectMealById(Integer id) {
-        return null;
+        String sql = """
+               SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
+                FROM meals 
+                WHERE meals.id=?
+                """;
+        return jdbcTemplate.queryForObject(sql, new RowMapper(),id);
     }
 
     @Override
