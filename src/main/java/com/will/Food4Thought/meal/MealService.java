@@ -17,4 +17,10 @@ public class MealService {
 
         return mealDAO.selectAllMeals();
     }
+
+
+    public void deleteMeal(Integer id) {
+
+        mealDAO.deleteMeals(id);
+    }
 }

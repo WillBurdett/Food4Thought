@@ -71,8 +71,11 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public int deleteMeals(Integer id) {
-        return 0;
+        String sql="DELETE FROM car WHERE id=?";
+        int rowsAffected=jdbcTemplate.update(sql,id);
+        return rowsAffected;
     }
+
 
     @Override
     public int updateMeals(Integer id, Meals update) {
