@@ -66,6 +66,23 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public int insertMeal(Meals meal) {
+//        String sql = """
+//                INSERT INTO meals (id, name, allergy_info, difficulty, ingredients, steps, meal_time)
+//                VALUES (?, ?, ?)
+//                """;
+//        int rowsAffected = jdbcTemplate.update(
+//                sql,
+//                meal.getId(),
+//                meal.getName(),
+//                meal.getAllergyInfo(),
+//                meal.getDifficulty(),
+//                meal.getIngredients(),
+//                meal.getSteps(),
+//                meal.getMealTime(),
+//
+//
+//        );
+//        return rowsAffected;
         return 0;
     }
 
