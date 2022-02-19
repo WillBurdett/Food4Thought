@@ -17,4 +17,9 @@ public class MealService {
 
         return mealDAO.selectAllMeals();
     }
+
+    public Meals selectMealById(Integer id){
+        return mealDAO.selectMealById(id);
+
+    }
 }
