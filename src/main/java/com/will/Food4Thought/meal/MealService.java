@@ -36,4 +36,7 @@ public class MealService {
         mealDAO.deleteMeals(id);
     }
 
+    public void updateById(Integer mealId, Meals update) {
+        mealDAO.updateMeals(mealId,update);
+    }
 }
