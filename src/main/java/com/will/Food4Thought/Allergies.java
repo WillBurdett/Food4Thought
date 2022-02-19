@@ -8,3 +8,5 @@ public enum Allergies {
     WHEAT,
     SESAME
 }
+
+
