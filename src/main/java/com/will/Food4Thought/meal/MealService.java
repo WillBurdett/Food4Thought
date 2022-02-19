@@ -22,4 +22,10 @@ public class MealService {
         return mealDAO.selectMealById(id);
 
     }
+
+    public void insertMeal(Meals meals) {
+        mealDAO.insertMeal(meals);
+
+    }
+
 }

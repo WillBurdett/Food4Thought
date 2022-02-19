@@ -66,25 +66,44 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public int insertMeal(Meals meal) {
-//        String sql = """
-//                INSERT INTO meals (id, name, allergy_info, difficulty, ingredients, steps, meal_time)
-//                VALUES (?, ?, ?)
-//                """;
-//        int rowsAffected = jdbcTemplate.update(
-//                sql,
-//                meal.getId(),
-//                meal.getName(),
-//                meal.getAllergyInfo(),
-//                meal.getDifficulty(),
-//                meal.getIngredients(),
-//                meal.getSteps(),
-//                meal.getMealTime(),
-//
-//
-//        );
-//        return rowsAffected;
-        return 0;
+        String sql = """
+                INSERT INTO meals (name, allergy_info, difficulty, ingredients, steps, meal_time)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """;
+        int rowsAffected = jdbcTemplate.update(
+                sql,
+                meal.getName(),
+                allergyInfo(meal.getAllergyInfo()),
+                String.valueOf(meal.getDifficulty().toString()),
+                ingredientsInfo(meal.getIngredients()),
+                meal.getSteps(),
+                String.valueOf(meal.getMealTime().toString())
+        );
+        return rowsAffected;
     }
+    public static String allergyInfo (List <Allergies> allergies){
+        if (allergies == null){
+            return null;
+        }
+        String output = "";
+        for (Allergies allergy : allergies) {
+            output+= allergy + ",";
+        }
+        return output.substring(0, output.length() - 1);
+    }
+    public static String ingredientsInfo (List <String> ingredients){
+        if (ingredients == null){
+
+            return null;
+        }
+        String output = "";
+        for ( String ingredient : ingredients) {
+            output+= ingredient + ",";
+        }
+        return output.substring(0, output.length() - 1);
+    }
+
+
 
     @Override
     public int deleteMeals(Integer id) {
