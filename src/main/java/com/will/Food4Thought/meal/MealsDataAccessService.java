@@ -1,7 +1,14 @@
 package com.will.Food4Thought.meal;
 
+
+import com.will.Food4Thought.Allergies;
+import com.will.Food4Thought.Difficulty;
+import com.will.Food4Thought.MealTime;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import java.util.List;
 
@@ -16,7 +23,35 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public List<Meals> selectAllMeals() {
-        return null;
+
+        var sql = """
+                SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
+                FROM meals;
+                """;
+       return jdbcTemplate.query(sql, (rs, i) -> {
+
+           return new Meals(rs.getInt("id"),
+                   rs.getString("name"),
+                   Difficulty.valueOf(rs.getString("difficulty").toUpperCase()),
+                   allergies(rs.getString("allergy_info")),
+                   Arrays.asList((rs.getString("ingredients").split(","))),
+                   rs.getString("steps"),
+                   MealTime.valueOf(rs.getString("meal_time").toUpperCase()),
+                   null
+           );
+       });
+    }
+
+    public static List<Allergies> allergies(String input){
+        List <Allergies> allergies = new ArrayList<>();
+        if (input == null){
+            return null;
+        }
+        for (String s : input.split(",")) {
+            Allergies allergy = Allergies.valueOf(s.toUpperCase().replaceAll(" ", ""));
+            allergies.add(allergy);
+        }
+        return allergies;
     }
 
     @Override
