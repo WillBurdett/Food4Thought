@@ -14,6 +14,7 @@ public class MealService {
     }
 
     public List<Meals> selectAllMeals() {
+
         return mealDAO.selectAllMeals();
     }
 }

@@ -1,5 +1,6 @@
 package com.will.Food4Thought.meal;
 
+
 import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.List;
 
 @Repository
@@ -21,6 +23,7 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public List<Meals> selectAllMeals() {
+
         var sql = """
                 SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
                 FROM meals;
