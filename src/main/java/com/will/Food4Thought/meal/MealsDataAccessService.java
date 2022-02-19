@@ -115,6 +115,18 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public int updateMeals(Integer id, Meals update) {
+        String sql= "UPDATE meals SET name = ?, allergy_info=?, difficulty =?, ingredients =?, steps =?, meal_time=? WHERE id =?";
+
+        int rowAffected = jdbcTemplate.update(sql,update.getName(),
+                allergyInfo(update.getAllergyInfo()),
+                String.valueOf(update.getDifficulty().toString()),
+                ingredientsInfo(update.getIngredients()),
+                update.getSteps(),
+                String.valueOf(update.getMealTime().toString()),id);
+
+        if(rowAffected ==1){
+            return 1;
+        }
         return 0;
     }
 }

@@ -34,10 +34,14 @@ public class MealController {
          mealService.insertMeal(meals);
     }
 
-
     @DeleteMapping(path = "meals/{id}")
     public void deleteMealById(@PathVariable("id") Integer mealId) {
         mealService.deleteMeal(mealId);
+    }
+    @PutMapping(path = "meals/{id}")
+    public void updateById(@PathVariable("id") Integer mealId, @RequestBody Meals update ){
+        mealService.updateById(mealId,update);
+
     }
 
 }
