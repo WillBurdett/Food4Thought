@@ -20,6 +20,14 @@ public class Chef {
         this.price = price;
     }
 
+    public Chef(Integer id, String name, String email, String location, Double price) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.location = location;
+        this.price = price;
+    }
+
     public Integer getId() {
         return id;
     }

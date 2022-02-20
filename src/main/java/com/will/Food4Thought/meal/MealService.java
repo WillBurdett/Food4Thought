@@ -45,6 +45,8 @@ public class MealService {
                 throw new LinkInvalidException("Link already posted");
             }
         }
+
+        // todo - some of our websites don't have a 'www.' beginning
         String firstSection = "https://www.";
         String anotherFirstSection = "http://www.";
         if((steps.substring(0,12).equals(firstSection) || steps.substring(0,11).equals(anotherFirstSection)) ){
@@ -93,17 +95,23 @@ public class MealService {
     }
 
     public Meals selectMealByPerson(Person person) {
+        // creating new person to return LocalTime.now()
         Person request = new Person(person.getMainIngredient(), person.getDifficulty(), person.getWantHelp());
-        String personIngredients = request.getMainIngredient();
+
+        // person values saved to placeholders to make sql string concatenation easier
+        String personIngredients = request.getMainIngredient().toLowerCase();
         String personDifficulty = String.valueOf(request.getDifficulty());
+        Boolean personWantsHelp = request.getWantHelp();
+
+        // determining thr meal_time listed based on the time
         String personMealtime;
         if (request.getLocalTime().getHour() < 11){
             personMealtime = "BREAKFAST";
         } else {
-            personMealtime = "('SNACK') OR LOWER(meal_time) = LOWER('DINNER')";
+            personMealtime = "('SNACK') OR LOWER(meal_time) = LOWER('MAIN')";
         }
-        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE LOWER('%" + personIngredients + "%') AND (LOWER(meal_time) = LOWER" + personMealtime + ") AND LOWER(difficulty) = LOWER('" + personDifficulty + "');";
-        Meals meal = mealDAO.selectMealByPerson(sql);
+        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE (LOWER(ingredients) LIKE '%" + personIngredients + "%') AND (LOWER(meal_time) = LOWER" + personMealtime + ") AND LOWER(difficulty) = LOWER('" + personDifficulty + "');";
+        Meals meal = mealDAO.selectMealByPerson(sql, personWantsHelp);
         return meal;
     }
 }

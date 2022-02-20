@@ -9,5 +9,5 @@ public interface MealDAO {
     int insertMeal(Meals meal);
     int deleteMeals(Integer id);
     int updateMeals(Integer id, Meals update);
-    Meals selectMealByPerson(String sql);
+    Meals selectMealByPerson(String sql, Boolean wantHelp);
 }
