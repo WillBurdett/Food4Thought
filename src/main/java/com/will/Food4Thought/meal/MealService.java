@@ -1,12 +1,16 @@
 package com.will.Food4Thought.meal;
 
+import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
 import com.will.Food4Thought.person.Person;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
+
+import static com.will.Food4Thought.Difficulty.*;
 
 @Service
 public class MealService {
@@ -17,29 +21,71 @@ public class MealService {
         this.mealDAO = mealDAO;
     }
 
-    public List<Meals> selectAllMeals() {
 
+    public List<Meals> selectAllMeals() {
+        //not sure if this bit is needed
+        if(mealDAO.selectAllMeals()==null){
+            throw new MealNotFoundException("No meals available");
+        }
         return mealDAO.selectAllMeals();
     }
 
 
     public Meals selectMealById(Integer id){
-        return mealDAO.selectMealById(id);
+        try {
+            return mealDAO.selectMealById(id);
+        }catch(EmptyResultDataAccessException e) {
+            throw new MealNotFoundException("Meal with id number "+ id + " does not exist");
+        }
 
     }
 
+
+    //This method is used in insertMeal method
+    public boolean checkIfStepsIsValid(String steps){
+        for (Meals selectAllMeal : mealDAO.selectAllMeals()) {
+            if (selectAllMeal.getSteps().equals(steps)) {
+                throw new LinkInvalidException("Link already posted");
+            }
+        }
+        String firstSection = "https://www.";
+        String anotherFirstSection = "http://www.";
+        if((steps.substring(0,12).equals(firstSection) || steps.substring(0,11).equals(anotherFirstSection)) ){
+            return true;
+        }else {
+            throw new LinkInvalidException("Check link again");
+        }
+
+    }
     public void insertMeal(Meals meals) {
-        mealDAO.insertMeal(meals);
+        if(checkIfStepsIsValid(meals.getSteps())){
+            mealDAO.insertMeal(meals);
+        }
     }
-
 
 
     public void deleteMeal(Integer id) {
-        mealDAO.deleteMeals(id);
+        try {
+            if(mealDAO.selectMealById(id)!=null) {
+                mealDAO.deleteMeals(id);
+            }
+        }catch(EmptyResultDataAccessException e) {
+            throw new MealNotFoundException("Meal with id number "+ id + " does not exist");
+            //This catches the EmptyResultDataAccessException thrown by JDBC template
+        }
+
     }
 
     public void updateById(Integer mealId, Meals update) {
-        mealDAO.updateMeals(mealId,update);
+        try{
+            if(mealDAO.selectMealById(mealId)!=null) {
+                mealDAO.updateMeals(mealId,update);
+            }
+        }catch(EmptyResultDataAccessException e) {
+            throw new MealNotFoundException("Meal with id number "+ mealId + " does not exist");
+            //This catches the EmptyResultDataAccessException thrown by the JDBC template
+        }
+
     }
 
     public Meals selectMealByPerson(Person person) {
