@@ -4,6 +4,7 @@ package com.will.Food4Thought.meal;
 import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -48,12 +49,14 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public Meals selectMealById(Integer id) {
-        String sql = """
-               SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
-                FROM meals 
-                WHERE meals.id=?
-                """;
-        return jdbcTemplate.queryForObject(sql, new RowMapper(),id);
+
+            String sql = """
+                    SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
+                     FROM meals 
+                     WHERE meals.id=?
+                     """;
+            return jdbcTemplate.queryForObject(sql, new RowMapper(), id);
+
     }
 
     @Override
@@ -73,6 +76,9 @@ public class MealsDataAccessService implements MealDAO{
         );
         return rowsAffected;
     }
+
+
+
     public static String allergyInfo (List <Allergies> allergies){
         if (allergies == null){
             return null;
@@ -83,6 +89,7 @@ public class MealsDataAccessService implements MealDAO{
         }
         return output.substring(0, output.length() - 1);
     }
+
     public static String ingredientsInfo (List <String> ingredients){
         if (ingredients == null){
 
@@ -99,9 +106,11 @@ public class MealsDataAccessService implements MealDAO{
 
     @Override
     public int deleteMeals(Integer id) {
-        String sql="DELETE FROM meals WHERE id=?";
-        int rowsAffected=jdbcTemplate.update(sql,id);
-        return rowsAffected;
+            String sql = "DELETE FROM meals WHERE id=?";
+            int rowsAffected = jdbcTemplate.update(sql, id);
+            return rowsAffected;
+
+
     }
 
 
