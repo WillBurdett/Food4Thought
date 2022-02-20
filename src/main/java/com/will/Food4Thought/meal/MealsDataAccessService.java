@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.List;
+import java.util.Random;
+import java.util.random.RandomGenerator;
 
 @Repository
 public class MealsDataAccessService implements MealDAO{
@@ -118,5 +120,18 @@ public class MealsDataAccessService implements MealDAO{
             return 1;
         }
         return 0;
+    }
+    @Override
+    public Meals selectMealByPerson(String sql){
+        List<Meals> meals = jdbcTemplate.query(sql, new RowMapper());
+        if (meals == null){
+            throw new MealNotFoundException("Sorry! A meal could not be found meeting your criteria. Please try again with different criteria.");
+        }
+        if (meals.size() == 0){
+            throw new MealNotFoundException("Sorry! A meal could not be found meeting your criteria. Please try again with different criteria.");
+        }
+        Random random = new Random();
+        int index = random.nextInt(meals.size());
+        return meals.get(index);
     }
 }

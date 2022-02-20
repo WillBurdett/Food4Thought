@@ -2,6 +2,7 @@ package com.will.Food4Thought.meal;
 
 
 
+import com.will.Food4Thought.person.Person;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,12 @@ public class MealController {
     public Meals getMealsById(@PathVariable ("id") Integer mealId){
         return mealService.selectMealById(mealId);
     }
+
+    @GetMapping(path = "meals/person")
+    public Meals getMealsByPerson(@RequestBody Person person){
+        return mealService.selectMealByPerson(person);
+    }
+
     @PostMapping(path = "meals")
     public void insertMeal(@RequestBody Meals meals){
          mealService.insertMeal(meals);
@@ -38,6 +45,7 @@ public class MealController {
     public void deleteMealById(@PathVariable("id") Integer mealId) {
         mealService.deleteMeal(mealId);
     }
+
     @PutMapping(path = "meals/{id}")
     public void updateById(@PathVariable("id") Integer mealId, @RequestBody Meals update ){
         mealService.updateById(mealId,update);
