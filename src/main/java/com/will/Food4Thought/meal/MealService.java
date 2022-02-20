@@ -21,7 +21,6 @@ public class MealService {
         this.mealDAO = mealDAO;
     }
 
-
     public List<Meals> selectAllMeals() {
         //not sure if this bit is needed
         if(mealDAO.selectAllMeals()==null){
@@ -29,7 +28,6 @@ public class MealService {
         }
         return mealDAO.selectAllMeals();
     }
-
 
     public Meals selectMealById(Integer id){
         try {
@@ -40,8 +38,7 @@ public class MealService {
 
     }
 
-
-    //This method is used in insertMeal method
+    //This method is used in the insertMeal method
     public boolean checkIfStepsIsValid(String steps){
         for (Meals selectAllMeal : mealDAO.selectAllMeals()) {
             if (selectAllMeal.getSteps().equals(steps)) {
@@ -60,16 +57,22 @@ public class MealService {
     public void insertMeal(Meals meals) {
         if(checkIfStepsIsValid(meals.getSteps())){
             mealDAO.insertMeal(meals);
+        }else{
+            if(mealDAO.deleteMeals(meals.getId())!=1){
+                throw new RowNotChangedException("Meal with id " + meals.getId() + " was not added");
+            }
         }
     }
-
 
     public void deleteMeal(Integer id) {
         try {
             if(mealDAO.selectMealById(id)!=null) {
                 mealDAO.deleteMeals(id);
-            }
-        }catch(EmptyResultDataAccessException e) {
+            }else if(mealDAO.deleteMeals(id)!=1){
+                    throw new RowNotChangedException("Meal with id " +  id + " was not deleted");
+                }
+
+    }catch(EmptyResultDataAccessException e) {
             throw new MealNotFoundException("Meal with id number "+ id + " does not exist");
             //This catches the EmptyResultDataAccessException thrown by JDBC template
         }
@@ -78,14 +81,15 @@ public class MealService {
 
     public void updateById(Integer mealId, Meals update) {
         try{
-            if(mealDAO.selectMealById(mealId)!=null) {
+            if(mealDAO.selectMealById(mealId)!=null && checkIfStepsIsValid(update.getSteps())) {
                 mealDAO.updateMeals(mealId,update);
+            } else if(mealDAO.updateMeals(mealId,update)!=1){
+                throw new RowNotChangedException("Meal with id " + mealId + " was not updated");
             }
         }catch(EmptyResultDataAccessException e) {
             throw new MealNotFoundException("Meal with id number "+ mealId + " does not exist");
             //This catches the EmptyResultDataAccessException thrown by the JDBC template
         }
-
     }
 
     public Meals selectMealByPerson(Person person) {

@@ -10,7 +10,6 @@ public enum Allergies {
     SOY,
     WHEAT,
     SESAME;
-
 }
 
 
