@@ -1,12 +1,33 @@
 package com.will.Food4Thought;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Allergies {
-    DAIRY,
-    NUTS,
-    SHELLFISH,
-    SOY,
-    WHEAT,
-    SESAME
+    DAIRY ("DAIRY"),
+    NUTS ("NUTS"),
+    SHELLFISH("SHELLFISH"),
+    SOY("SOY"),
+    WHEAT("WHEAT"),
+    SESAME("SESAME");
+
+
+    private String allergies;
+
+    Allergies(String allergies){
+        this.allergies = allergies;
+    }
+
+
+    @JsonCreator
+    public static Allergies fromString(String phoneType) {
+        return phoneType == null
+                ? null
+                : Allergies.valueOf(phoneType.toUpperCase());
+    }
+
+    @JsonValue
+    public String getAllergies() {
+        return this.allergies.toUpperCase();
+    }
 }
-
-
