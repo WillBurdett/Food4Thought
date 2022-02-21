@@ -1,7 +1,6 @@
 package com.will.Food4Thought.chef;
 
 import com.will.Food4Thought.meal.RowNotChangedException;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +8,9 @@ import java.util.List;
 @Service
 public class ChefService {
 
-    private ChefDAO chefDAO;
+     ChefDAO chefDAO;
 
-    public ChefService(@Qualifier("postgres") ChefDAO chefDAO) {
+    public ChefService(ChefDAO chefDAO) {
         this.chefDAO = chefDAO;
     }
 
@@ -47,7 +46,7 @@ public class ChefService {
                 if (checkIfEmailIsThere(chefs.getEmail())) {
                     chefDAO.insertChef(chefs);
                 } else if (chefDAO.insertChef(chefs) != 1) {
-                    throw new RowNotChangedException("chef was not deleted");
+                    throw new RowNotChangedException("chef not added");
                 }
             }
 
