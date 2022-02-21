@@ -8,6 +8,7 @@ import com.will.Food4Thought.chef.Chef;
 import com.will.Food4Thought.chef.ChefMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
