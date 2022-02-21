@@ -11,7 +11,7 @@ public class ChefDataAccessService implements ChefDAO {
     }
 
     @Override
-    public int deleteChefById(Chef chef) {
+    public int deleteChefById(Integer id) {
         return 0;
     }
 
@@ -21,12 +21,12 @@ public class ChefDataAccessService implements ChefDAO {
     }
 
     @Override
-    public Chef selectAllChefs(Integer id) {
+    public Chef selectChefById(Integer id) {
         return null;
     }
 
     @Override
-    public List<Chef> selectChef() {
+    public List<Chef> selectAllChefs() {
         return null;
     }
 }
