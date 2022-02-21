@@ -16,26 +16,47 @@ public class ChefDataAccessService implements ChefDAO {
 
     @Override
     public int insertChef(Chef chef) {
-        return 0;
+        String sql = """
+                INSERT INTO chefs (name, email, location, price)
+                VALUES (?, ?, ?, ?)
+                """;
+        return jdbcTemplate.update(sql,
+                chef.getName(),chef.getEmail(),chef.getLocation(),chef.getPrice());
     }
 
     @Override
     public int deleteChefById(Integer id) {
-        return 0;
+        String sql = "DELETE FROM chefs WHERE id=?";
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        return rowsAffected;
     }
 
     @Override
     public int updateChefsById(Integer id, Chef update) {
+        var sql = """
+                UPDATE chefs SET name = ?, email = ?, location = ?, price = ? WHERE id = ?;
+                """;
+        int rowAffected = jdbcTemplate.update(sql, update.getName(), update.getEmail(), update.getLocation(), update.getPrice(),
+                id);
+        if (rowAffected ==1){
+            return 1;
+        }
         return 0;
     }
 
     @Override
     public Chef selectChefById(Integer id) {
-        return null;
+        var sql = """
+                SELECT id, name, email, location, price FROM chefs WHERE chefs.id = ?;
+                """;
+        return jdbcTemplate.queryForObject(sql, new ChefMapper(), id);
     }
 
     @Override
     public List<Chef> selectAllChefs() {
-        return null;
+        var sql = """
+                SELECT id, name, email, location, price FROM chefs
+                """;
+        return jdbcTemplate.query(sql, new ChefMapper());
     }
 }
