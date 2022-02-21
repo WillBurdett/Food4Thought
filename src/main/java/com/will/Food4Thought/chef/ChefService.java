@@ -1,5 +1,7 @@
 package com.will.Food4Thought.chef;
 
+import com.will.Food4Thought.chef.chef_exceptions.ChefNotFoundException;
+import com.will.Food4Thought.chef.chef_exceptions.EmailInvalidException;
 import com.will.Food4Thought.meal.RowNotChangedException;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,8 @@ public class ChefService {
             return chefDAO.selectChefById(chefId);
         } catch (IllegalStateException e) {
             throw new ChefNotFoundException("chef not found by Id");
-        } }
+        }
+    }
 
 // Checking if the chef is already in the database by email entered
         public boolean checkIfEmailIsThere (String email){
@@ -36,7 +39,6 @@ public class ChefService {
                 if (selectAllChef.getEmail().equals(email)) {
                     throw new EmailInvalidException("Email already posted");
                 }
-
             }
             return true;
         }

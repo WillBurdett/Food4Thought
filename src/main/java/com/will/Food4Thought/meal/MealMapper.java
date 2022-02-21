@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 //import static com.will.Food4Thought.meal.MealsDataAccessService.allergies;
 
-public class RowMapper implements org.springframework.jdbc.core.RowMapper<Meals> {
+public class MealMapper implements org.springframework.jdbc.core.RowMapper<Meals> {
     Utilities utilities = new Utilities();
     @Override
     public Meals mapRow(ResultSet rs, int rowNum) throws SQLException {
