@@ -129,9 +129,9 @@ public class MealService {
         if (request.getLocalTime().getHour() < 11){
             personMealtime = "'BREAKFAST'";
         } else {
-            personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN')";
+            personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN'";
         }
-        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + personIngredients + "%' AND LOWER(meal_time) = LOWER(" + personMealtime + ") AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
+        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + personIngredients + "%' AND (LOWER(meal_time) = LOWER(" + personMealtime + ")) AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
         Meals meal = mealDAO.selectMealByPerson(sql, personWantsHelp);
         return meal;
     }
