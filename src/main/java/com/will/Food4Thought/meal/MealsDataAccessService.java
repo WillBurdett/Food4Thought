@@ -4,6 +4,9 @@ package com.will.Food4Thought.meal;
 import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.chef.Chef;
+import com.will.Food4Thought.chef.ChefMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -48,12 +51,13 @@ public class MealsDataAccessService implements MealDAO {
 
     @Override
     public Meals selectMealById(Integer id) {
-        String sql = """
-               SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
-                FROM meals 
-                WHERE meals.id=?
-                """;
-        return jdbcTemplate.queryForObject(sql, new RowMapper(),id);
+
+            String sql = """
+                    SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
+                     FROM meals 
+                     WHERE meals.id=?
+                     """;
+            return jdbcTemplate.queryForObject(sql, new RowMapper(), id);
     }
 
     @Override
@@ -73,6 +77,9 @@ public class MealsDataAccessService implements MealDAO {
         );
         return rowsAffected;
     }
+
+
+
     public static String allergyInfo (List <Allergies> allergies){
         if (allergies == null){
             return null;
@@ -83,6 +90,7 @@ public class MealsDataAccessService implements MealDAO {
         }
         return output.substring(0, output.length() - 1);
     }
+
     public static String ingredientsInfo (List <String> ingredients){
         if (ingredients == null){
 
@@ -99,9 +107,11 @@ public class MealsDataAccessService implements MealDAO {
 
     @Override
     public int deleteMeals(Integer id) {
-        String sql="DELETE FROM meals WHERE id=?";
-        int rowsAffected=jdbcTemplate.update(sql,id);
-        return rowsAffected;
+            String sql = "DELETE FROM meals WHERE id=?";
+            int rowsAffected = jdbcTemplate.update(sql, id);
+            return rowsAffected;
+
+
     }
 
 
@@ -122,7 +132,7 @@ public class MealsDataAccessService implements MealDAO {
         return 0;
     }
     @Override
-    public Meals selectMealByPerson(String sql){
+    public Meals selectMealByPerson(String sql, Boolean wantHelp){
         List<Meals> meals = jdbcTemplate.query(sql, new RowMapper());
         if (meals == null){
             throw new MealNotFoundException("Sorry! A meal could not be found meeting your criteria. Please try again with different criteria.");
@@ -130,8 +140,20 @@ public class MealsDataAccessService implements MealDAO {
         if (meals.size() == 0){
             throw new MealNotFoundException("Sorry! A meal could not be found meeting your criteria. Please try again with different criteria.");
         }
+        // Pick a random meal from the short-list meeting the criteria
         Random random = new Random();
         int index = random.nextInt(meals.size());
-        return meals.get(index);
+        Meals selection = meals.get(index);
+
+        // if they don't want help, no need to attach a list of chefs
+        if (!wantHelp){
+            return selection;
+        }
+
+        // select query matching the id of selection to a chef
+        String chefSQL = "SELECT chefs.id, chefs.name, chefs.location,chefs.price,chefs.email FROM chefs INNER JOIN matches ON matches.chefs_id = chefs.id INNER JOIN meals ON meals.id = matches.meals_id WHERE meals.id = " + selection.getId() + ";";
+        List<Chef> chefs = jdbcTemplate.query(chefSQL,new ChefMapper());
+        selection.setChefs(chefs);
+        return selection;
     }
 }
