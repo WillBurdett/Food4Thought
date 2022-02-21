@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.Arrays;
 import java.util.List;
@@ -170,10 +171,17 @@ class MealServiceTest {
 
     @Test
     void deleteMeal() {
-        //GIVEN
-
-        //WHEN
-        //THEN
+//        //GIVEN
+//        given(fakeMealDao.selectMealById(2)).willReturn(notNull());
+//        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+//
+//        //WHEN
+//        underTest.deleteMeal(2);
+//        verify(fakeMealDao).deleteMeals(captor.capture());
+//        Integer testValue = captor.getValue();
+//
+//        //THEN
+//        assertThat(testValue).isEqualTo(2);
     }
 
     @Test
