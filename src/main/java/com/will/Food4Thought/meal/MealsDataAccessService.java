@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.random.RandomGenerator;
 
 @Repository
-public class MealsDataAccessService implements MealDAO{
+public class MealsDataAccessService implements MealDAO {
 
     private JdbcTemplate jdbcTemplate;
 
