@@ -12,8 +12,8 @@ public class ChefMapper implements RowMapper<Chef> {
         return new Chef(
                 resultset.getInt("id"),
                 resultset.getString("name"),
-                resultset.getString("location"),
                 resultset.getString("email"),
+                resultset.getString("location"),
                 resultset.getDouble("price")
         );
     }

@@ -99,7 +99,6 @@ public class MealService {
             throw new MealNotFoundException("Meal with id number "+ id + " does not exist");
             //This catches the EmptyResultDataAccessException thrown by JDBC template
         }
-
     }
 
     public void updateById(Integer mealId, Meals update) {
