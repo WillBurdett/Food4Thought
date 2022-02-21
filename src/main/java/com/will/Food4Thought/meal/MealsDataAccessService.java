@@ -15,15 +15,13 @@ import java.util.Random;
 import java.util.random.RandomGenerator;
 
 @Repository
-public class MealsDataAccessService implements MealDAO{
+public class MealsDataAccessService implements MealDAO {
 
     private JdbcTemplate jdbcTemplate;
 
     public MealsDataAccessService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-
 
     @Override
     public List<Meals> selectAllMeals() {
