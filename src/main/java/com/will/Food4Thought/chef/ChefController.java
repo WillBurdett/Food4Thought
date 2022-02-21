@@ -32,4 +32,9 @@ public class ChefController {
         chefService.deleteChef(chefId);
 }
 
+@PutMapping(path="chefs/{id}")
+    public void updateChefsById(@PathVariable("id") Integer chefId, @RequestBody Chef update){
+        chefService.updateChefsById(chefId,update);
+}
+
 }
