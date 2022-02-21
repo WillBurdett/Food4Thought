@@ -18,10 +18,14 @@ public class ChefService {
 
     //Selecting all Chefs
     public List<Chef> selectAllChefs() {
+        List<Chef> chefs = chefDAO.selectAllChefs();
         if (chefDAO.selectAllChefs() == null) {
             throw new IllegalStateException("No chef(s) available.");
         }
-        return chefDAO.selectAllChefs();
+        if (chefs.size() == 0){
+            throw new ChefNotFoundException("No chefs found on system.");
+        }
+        return chefs;
     }
 
     //Selecting Chef By ID
