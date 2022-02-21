@@ -26,12 +26,16 @@ public class ChefService {
 
     //Selecting Chef By ID
     public Chef selectChefById(Integer chefId) {
-        try {
-            return chefDAO.selectChefById(chefId);
-        } catch (IllegalStateException e) {
-
+        Chef chef = null;
+        for (Chef c : selectAllChefs()) {
+            if (c.getId().equals(chefId)){
+                chef = chefDAO.selectChefById(chefId);
+            }
+        }
+        if (chef == null){
             throw new ChefNotFoundException("Chef not found by id " + chefId + ".");
         }
+        return chef;
     }
 
     // Checking if the chef is already in the database by email entered
