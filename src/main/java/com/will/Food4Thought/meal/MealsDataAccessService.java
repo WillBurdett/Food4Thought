@@ -19,7 +19,7 @@ import java.util.Random;
 import java.util.random.RandomGenerator;
 
 @Repository
-public class MealsDataAccessService implements MealDAO{
+public class MealsDataAccessService implements MealDAO {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -53,13 +53,14 @@ public class MealsDataAccessService implements MealDAO{
     @Override
     public Meals selectMealById(Integer id) {
 
-            String sql = """
-                    SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
-                     FROM meals 
-                     WHERE meals.id=?
-                     """;
-            return jdbcTemplate.queryForObject(sql, new RowMapper(), id);
+        String sql = """
+                SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
+                 FROM meals 
+                 WHERE meals.id=?
+                 """;
+        return jdbcTemplate.queryForObject(sql, new RowMapper(), id);
     }
+
 
     @Override
     public int insertMeal(Meals meal) {
@@ -115,7 +116,6 @@ public class MealsDataAccessService implements MealDAO{
 
     }
 
-
     @Override
     public int updateMeals(Integer id, Meals update) {
         String sql= "UPDATE meals SET name = ?, allergy_info=?, difficulty =?, ingredients =?, steps =?, meal_time=? WHERE id =?";
@@ -132,6 +132,13 @@ public class MealsDataAccessService implements MealDAO{
         }
         return 0;
     }
+
+
+
+
+
+
+
     @Override
     public Meals selectMealByPerson(String sql, Boolean wantHelp){
         List<Meals> meals = jdbcTemplate.query(sql, new RowMapper());
@@ -158,3 +165,4 @@ public class MealsDataAccessService implements MealDAO{
         return selection;
     }
 }
+
