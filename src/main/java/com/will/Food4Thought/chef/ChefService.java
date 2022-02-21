@@ -29,14 +29,15 @@ public class ChefService {
             return chefDAO.selectChefById(chefId);
         } catch (IllegalStateException e) {
             throw new IllegalStateException("chef not found by Id");
+            //ChefNotFoundException to be created
         } }
 
-// Checking if the check is already in the database by email entered
+// Checking if the chef is already in the database by email entered
         public boolean checkIfEmailIsThere (String email){
             for (Chef selectAllChef : chefDAO.selectAllChefs()) {
                 if (selectAllChef.getEmail().equals(email)) {
                     throw new IllegalStateException("Email already posted");
-                    //Exception for email invalid
+                    //Exception for email invalid need to be made
                 }
 
             }
@@ -74,5 +75,3 @@ public class ChefService {
 
 
         }
-    }
-}
