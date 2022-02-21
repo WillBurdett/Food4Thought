@@ -3,6 +3,7 @@ package com.will.Food4Thought.meal;
 
 import com.will.Food4Thought.chef.Chef;
 import com.will.Food4Thought.chef.ChefMapper;
+import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
 import com.will.Food4Thought.meal.utils.Utilities;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

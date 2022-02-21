@@ -2,7 +2,7 @@ package com.will.Food4Thought.chef;
 
 import com.will.Food4Thought.chef.chef_exceptions.ChefNotFoundException;
 import com.will.Food4Thought.chef.chef_exceptions.EmailInvalidException;
-import com.will.Food4Thought.meal.RowNotChangedException;
+import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,18 +1,14 @@
 package com.will.Food4Thought.meal;
 
-import com.will.Food4Thought.Allergies;
-import com.will.Food4Thought.Difficulty;
-import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.meal.meal_exceptions.LinkInvalidException;
+import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
+import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
 import com.will.Food4Thought.person.Person;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.List;
-
-import static com.will.Food4Thought.Difficulty.*;
 
 @Service
 public class MealService {
