@@ -28,7 +28,7 @@ public class MealService {
         try {
             return mealDAO.selectAllMeals();
         }catch(EmptyResultDataAccessException e) {
-            throw new MealNotFoundException("Meal not found");
+            throw new MealNotFoundException("Meals not found");
         }
     }
 
@@ -79,13 +79,13 @@ public class MealService {
 
     public void insertMeal(Meals meals) {
 
-            if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
-                mealDAO.insertMeal(meals);
-            } else if (mealDAO.deleteMeals(meals.getId()) != 1){
-
-                    throw new RowNotChangedException("Meal with id " + meals.getId() + " was not added");
-                }
-            }
+        if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
+            mealDAO.insertMeal(meals);
+        }
+        if (mealDAO.insertMeal(meals) != 1) {
+            throw new RowNotChangedException("Meal with id " + meals.getId() + " was not added");
+        }
+    }
 
 
     public void deleteMeal(Integer id) {
