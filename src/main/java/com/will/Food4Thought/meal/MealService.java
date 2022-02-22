@@ -43,7 +43,6 @@ public class MealService {
     //This method is used in the insertMeal method and the updateById method
     public boolean isStepsValid(String steps){
 
-        // todo - some of our websites don't have a 'www.' beginning - completed
         String firstSection = "https://";
         String anotherFirstSection = "http://";
         if((steps.substring(0,8).equals(firstSection) || steps.substring(0,7).equals(anotherFirstSection)) ){
@@ -75,17 +74,14 @@ public class MealService {
     }
 
     public void insertMeal(Meals meals) {
-
         try {
             if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
                 mealDAO.insertMeal(meals);
             }
         } catch (Exception e) {
             throw new MealNotAddedException("Meal with id " + meals.getId() + " was not added");
-
         }
     }
-
 
     public void deleteMeal(Integer id) {
         Integer x = 0;
@@ -109,7 +105,7 @@ public class MealService {
             } else if(mealDAO.updateMeals(mealId,update)!=1){
                 throw new RowNotChangedException("Meal with id " + mealId + " was not updated");
             }
-        }catch(EmptyResultDataAccessException e) {
+        } catch(EmptyResultDataAccessException e) {
             throw new MealNotFoundException("Meal with id number "+ mealId + " does not exist");
             //This catches the EmptyResultDataAccessException thrown by the JDBC template
         }
