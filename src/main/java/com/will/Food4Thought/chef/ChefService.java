@@ -1,11 +1,14 @@
 package com.will.Food4Thought.chef;
 
+import com.will.Food4Thought.chef.chef_utils.Utilities;
 import com.will.Food4Thought.chef.chef_exceptions.ChefNotFoundException;
 import com.will.Food4Thought.chef.chef_exceptions.EmailInvalidException;
 import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ChefService {
@@ -42,6 +45,8 @@ public class ChefService {
         return chef;
     }
 
+
+
     // Checking if the chef is already in the database by email entered
     public boolean checkIfEmailIsThere (String email){
         for (Chef selectAllChef : chefDAO.selectAllChefs()) {
@@ -52,14 +57,21 @@ public class ChefService {
         return true;
     }
 
-    //Inserting a Chef
+    //Inserting a Chef but validating the email before (makes sure you can't put more than 20 characters before the @).
     public void insertChef (Chef chefs){
+
         if (checkIfEmailIsThere(chefs.getEmail())) {
-            chefDAO.insertChef(chefs);
-        } else if (chefDAO.insertChef(chefs) != 1) {
+            if ((Utilities.validateEmail(chefs.getEmail()))) {
+                chefDAO.insertChef(chefs);
+            } else throw new EmailInvalidException("Please re-enter your email again.");
+        }
+        if (chefDAO.insertChef(chefs) != 1) {
                     throw new RowNotChangedException("Chef " + chefs.getName() + " not added.");
         }
     }
+
+
+
 
     //Deleting Chef by ID
     public void deleteChef (Integer chefId){
