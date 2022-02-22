@@ -3,10 +3,14 @@ package com.will.Food4Thought.meal;
 import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.chef.Chef;
+import com.will.Food4Thought.person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.relational.core.sql.In;
@@ -135,66 +139,153 @@ class MealServiceTest {
     }
 
 
-
-//    @Test
-//    void insertMealWorksProperly() {
-//        //GIVEN
-//        List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
-//        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
-//        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
-//        ArgumentCaptor<Meals> captor = ArgumentCaptor.forClass(Meals.class);
-//
-//        //WHEN
-//        underTest.insertMeal(pasta);
-//        verify(fakeMealDao).insertMeal(captor.capture());
-//        Meals testMeal = captor.getValue();
-//
-//        //THEN
-//        assertThat(testMeal).isEqualTo(pasta);
-//    }
-
     @Test
-    void mealWasNotAbleToBeAdded() {
+    void insertMealWorksProperly() {
         //GIVEN
         List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
         List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
         Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
-        when(fakeMealDao.insertMeal(pasta)).thenReturn(0);
+        ArgumentCaptor<Meals> captor = ArgumentCaptor.forClass(Meals.class);
+
+        //WHEN
+        underTest.insertMeal(pasta);
+        verify(fakeMealDao).insertMeal(captor.capture());
+        Meals testMeal = captor.getValue();
+
+        //THEN
+        assertThat(testMeal).isEqualTo(pasta);
+    }
+
+    @Test
+    void exceptionThrownWhenInserting() {
+        //GIVEN
+        List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
+        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
+        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "www.test_link.com", MealTime.MAIN, null);
+        given(fakeMealDao.insertMeal(pasta)).willReturn(5);
 
         //THEN
         assertThatThrownBy(() -> {
             //WHEN
             underTest.insertMeal(pasta);
-        }).isInstanceOf(RowNotChangedException.class)
+        }).isInstanceOf(MealNotAddedException.class)
                 .hasMessage("Meal with id " + 1 + " was not added");
     }
 
     @Test
-    void deleteMeal() {
+    void mealWasDeletedSuccessfully() {
+        //GIVEN
+        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, List.of(Allergies.DAIRY, Allergies.WHEAT), List.of("Pasta", "Cheese"), "http://www.test_link.com", MealTime.MAIN, null);
+        given(fakeMealDao.selectMealById(1)).willReturn(pasta);
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+
+        //WHEN
+        underTest.deleteMeal(1);
+        verify(fakeMealDao).deleteMeals(captor.capture());
+        Integer testValue = captor.getValue();
+
+        //THEN
+        assertThat(testValue).isEqualTo(1);
+    }
+
+    @Test
+    void rowNotChangedExceptionShown() {
+        //GIVEN
+        List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
+        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
+        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+        given(fakeMealDao.deleteMeals(1)).willReturn(2);
+
+        //THEN
+        assertThatThrownBy(() -> {
+            //WHEN
+            underTest.deleteMeal(1);
+        }).isInstanceOf(RowNotChangedException.class)
+                .hasMessage("Meal with id " +  1 + " was not deleted");
+    }
+
+    @Test
+    void mealNotFoundExceptionThrown() {
+        //GIVEN
+        given(fakeMealDao.selectMealById(1)).willThrow(EmptyResultDataAccessException.class);
+
+        //THEN
+        assertThatThrownBy(() -> {
+            // WHEN
+            underTest.deleteMeal(1);
+        }).isInstanceOf(MealNotFoundException.class)
+                .hasMessage("Meal with id number "+ 1 + " does not exist");
+    }
+
+    @Test
+    void mealUpdatedSuccessfully() {
+        //GIVEN
+        List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
+        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
+        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+        Meals updatedPasta = new Meals(1,"Pasta", Difficulty.INTERMEDIATE, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+
+        given(fakeMealDao.selectMealById(1)).willReturn(pasta);
+        ArgumentCaptor<Meals> captor = ArgumentCaptor.forClass(Meals.class);
+
+        //WHEN
+        underTest.updateById(1, updatedPasta);
+        verify(fakeMealDao).updateMeals(anyInt(), captor.capture());
+        Meals testMeal = captor.getValue();
+
+        //THEN
+        assertThat(testMeal).isEqualTo(updatedPasta);
+    }
+
+    @Test
+    void updateMealsRowNotChangedException() {
+        //GIVEN
+        List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
+        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
+        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+        Meals updatedPasta = new Meals(1,"Pasta", Difficulty.INTERMEDIATE, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+
+        given(fakeMealDao.updateMeals(1, updatedPasta)).willReturn(2);
+
+        //THEN
+        assertThatThrownBy(() -> {
+            //WHEN
+            underTest.updateById(1, updatedPasta);
+        }).isInstanceOf(RowNotChangedException.class)
+                .hasMessage("Meal with id " + 1 + " was not updated");
+    }
+
+    @Test
+    void updateMealsMealNotFoundExceptionThrown() {
+        //GIVEN
+        List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
+        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
+        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+        Meals updatedPasta = new Meals(1,"Pasta", Difficulty.INTERMEDIATE, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+        given(fakeMealDao.updateMeals(1, updatedPasta)).willThrow(EmptyResultDataAccessException.class);
+
+        //THEN
+        assertThatThrownBy(() -> {
+            // WHEN
+            underTest.updateById(1, updatedPasta);
+        }).isInstanceOf(MealNotFoundException.class)
+                .hasMessage("Meal with id number "+ 1 + " does not exist");
+    }
+
+
+//    @Test
+//    void selectMealByPerson() {
 //        //GIVEN
-//        given(fakeMealDao.selectMealById(2)).willReturn(notNull());
-//        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+//        Person testPerson = new Person("egg", Difficulty.BEGINNER, false);
+//        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + testPerson.getMainIngredient() + "%' AND (LOWER(meal_time) = LOWER(" + MealTime.BREAKFAST + ")) AND LOWER(difficulty) = LOWER('" + testPerson.getDifficulty() + "')";
+//        Meals expected = new Meals(23, "Swedish Pancakes", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Milk", "Eggs"), "https://www.allrecipes.com/recipe/52581/easy-swedish-pancakes/", MealTime.BREAKFAST, null);
+//        given(fakeMealDao.selectMealByPerson(sql, testPerson.getWantHelp())).willReturn(expected);
 //
 //        //WHEN
-//        underTest.deleteMeal(2);
-//        verify(fakeMealDao).deleteMeals(captor.capture());
-//        Integer testValue = captor.getValue();
+//        Meals actual = underTest.selectMealByPerson(testPerson);
+//
 //
 //        //THEN
-//        assertThat(testValue).isEqualTo(2);
-    }
-
-    @Test
-    void updateById() {
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-
-    @Test
-    void selectMealByPerson() {
-        //GIVEN
-        //WHEN
-        //THEN
-    }
+//        assertEquals(expected, actual);
+//    }
 }
