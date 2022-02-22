@@ -4,15 +4,21 @@ import com.will.Food4Thought.Allergies;
 import com.will.Food4Thought.Difficulty;
 import com.will.Food4Thought.MealTime;
 
+import com.will.Food4Thought.chef.Chef;
+import com.will.Food4Thought.meal.meal_exceptions.LinkInvalidException;
 import com.will.Food4Thought.meal.meal_exceptions.MealNotAddedException;
 import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
 
 import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
+import com.will.Food4Thought.person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
 
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
@@ -24,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@DataJdbcTest
 class MealServiceTest {
 
     private MealService underTest;
@@ -138,6 +145,35 @@ class MealServiceTest {
         }).hasMessage("Check link again");
     }
 
+    @Test
+    void exceptionThrownWhenLinkExists() {
+        //GIVEN
+        String testSteps = "https://www.testlink.com";
+        Meals pasta = new Meals(1, "Pasta", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Pasta", "Cheese"), "https://www.testlink.com", MealTime.MAIN, null);
+        given(fakeMealDao.selectAllMeals()).willReturn(List.of(pasta));
+
+        //THEN
+        assertThatThrownBy(() -> {
+            //WHEN
+            Boolean actual = underTest.isStepsPosted(testSteps);
+        }).isInstanceOf(LinkInvalidException.class)
+                .hasMessage("Link already posted");
+    }
+
+    @Test
+    void mealNameAlreadyExists() {
+        //GIVEN
+        String testName = "Pasta";
+        Meals pasta = new Meals(1, "Pasta", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Pasta", "Cheese"), "https://www.testlink.com", MealTime.MAIN, null);
+        given(fakeMealDao.selectAllMeals()).willReturn(List.of(pasta));
+
+        //THEN
+        assertThatThrownBy(() -> {
+            //WHEN
+            Boolean actual = underTest.isNameValid(testName);
+        }).isInstanceOf(IllegalStateException.class)
+                .hasMessage(" Meal with same name found ");
+    }
 
     @Test
     void insertMealWorksProperly() {
@@ -272,20 +308,37 @@ class MealServiceTest {
                 .hasMessage("Meal with id number "+ 1 + " does not exist");
     }
 
-
 //    @Test
 //    void selectMealByPerson() {
+//        //Happy Path
 //        //GIVEN
-//        Person testPerson = new Person("egg", Difficulty.BEGINNER, false);
-//        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + testPerson.getMainIngredient() + "%' AND (LOWER(meal_time) = LOWER(" + MealTime.BREAKFAST + ")) AND LOWER(difficulty) = LOWER('" + testPerson.getDifficulty() + "')";
-//        Meals expected = new Meals(23, "Swedish Pancakes", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Milk", "Eggs"), "https://www.allrecipes.com/recipe/52581/easy-swedish-pancakes/", MealTime.BREAKFAST, null);
+//        Person testPerson = new Person("kielbasa", Difficulty.BEGINNER, false);
+//        Chef chef1 = new Chef(1, "James Oliver", "jamesoliver@hotmail.com", "London", 300.00);
+//        Chef chef2 = new Chef(2, "Gordon Ramsey", "gordon@ramsey.com", "London", 500.00);
+//        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + testPerson.getMainIngredient() + "%' AND (LOWER(meal_time) = LOWER(" + MealTime.SNACK + ")) AND LOWER(difficulty) = LOWER('" + testPerson.getDifficulty() + "')";
+//        Meals expected = new Meals(2, "Pasta Salad", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Kielbasa", "Noodles"), "https://www.inspiredtaste.net/38019/easy-pasta-salad-recipe/#itr-recipe-38019", MealTime.SNACK, null);
 //        given(fakeMealDao.selectMealByPerson(sql, testPerson.getWantHelp())).willReturn(expected);
 //
 //        //WHEN
 //        Meals actual = underTest.selectMealByPerson(testPerson);
 //
-//
 //        //THEN
-//        assertEquals(expected, actual);
+//        assertThat(actual).isEqualTo(expected);
 //    }
+
+//    @Test
+//    void correctSQLForSingleIngredientReturned() {
+//        //GIVEN
+//        Person testPerson = new Person("chicken, rice", Difficulty.BEGINNER, false);
+//        //WHEN
+//        //THEN
+//    }
+//
+//    @Test
+//    void correctSQLForMultipleIngredientReturned() {
+//        //GIVEN
+//        //WHEN
+//        //THEN
+//    }
+
 }
