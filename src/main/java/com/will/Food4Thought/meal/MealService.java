@@ -1,6 +1,7 @@
 package com.will.Food4Thought.meal;
 
 import com.will.Food4Thought.meal.meal_exceptions.LinkInvalidException;
+import com.will.Food4Thought.meal.meal_exceptions.MealNotAddedException;
 import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
 import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
 import com.will.Food4Thought.person.Person;
@@ -75,22 +76,26 @@ public class MealService {
 
     public void insertMeal(Meals meals) {
 
-        if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
-            mealDAO.insertMeal(meals);
-        }
-        if (mealDAO.insertMeal(meals) != 1) {
-            throw new RowNotChangedException("Meal with id " + meals.getId() + " was not added");
+        try {
+            if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
+                mealDAO.insertMeal(meals);
+            }
+        } catch (Exception e) {
+            throw new MealNotAddedException("Meal with id " + meals.getId() + " was not added");
+
         }
     }
 
 
     public void deleteMeal(Integer id) {
+        Integer x = 0;
         try {
             if(mealDAO.selectMealById(id)!=null) {
-                mealDAO.deleteMeals(id);
-            }else if(mealDAO.deleteMeals(id)!=1){
-                    throw new RowNotChangedException("Meal with id " +  id + " was not deleted");
-                }
+                x = mealDAO.deleteMeals(id);
+            }
+            else if(x != 1){
+                throw new RowNotChangedException("Meal with id " +  id + " was not deleted");
+            }
     }catch(EmptyResultDataAccessException e) {
             throw new MealNotFoundException("Meal with id number "+ id + " does not exist");
             //This catches the EmptyResultDataAccessException thrown by JDBC template
@@ -129,9 +134,9 @@ public class MealService {
         String personDifficulty = String.valueOf(request.getDifficulty());
         Boolean personWantsHelp = request.getWantHelp();
 
-        // determining thr meal_time listed based on the time
+        // determining the meal_time listed based on the time
         String personMealtime;
-        if (request.getLocalTime().getHour() < 9){
+        if (request.getLocalTime().getHour() < 11){
             personMealtime = "'BREAKFAST'";
         } else {
             personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN'";
