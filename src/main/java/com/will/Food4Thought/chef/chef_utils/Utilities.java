@@ -25,6 +25,15 @@ public class Utilities {
 
             }
 
+
+
+    // check the price input for chef is above 0
+    public static boolean minimumPrice (Double price) {
+        if (Double price <= 0){
+            throw new
+        }
     }
+
+}
 
 
