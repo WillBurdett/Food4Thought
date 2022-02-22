@@ -46,8 +46,6 @@ public class ChefService {
         return chef;
     }
 
-
-
     // Checking if the chef is already in the database by email entered
     public boolean checkIfEmailIsUnique(String email){
         for (Chef selectAllChef : chefDAO.selectAllChefs()) {
@@ -69,10 +67,7 @@ public class ChefService {
         if (rowsChanged != 1) {
             throw new RowNotChangedException("Chef " + chefs.getName() + " not added.");
         }
-        }
-
-
-
+    }
 
 
     //Deleting Chef by ID
