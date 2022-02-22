@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -308,37 +309,36 @@ class MealServiceTest {
                 .hasMessage("Meal with id number "+ 1 + " does not exist");
     }
 
-//    @Test
-//    void selectMealByPerson() {
-//        //Happy Path
-//        //GIVEN
-//        Person testPerson = new Person("kielbasa", Difficulty.BEGINNER, false);
+    @Test
+    void selectMealByPerson() {
+        //Happy Path
+        //GIVEN
 //        Chef chef1 = new Chef(1, "James Oliver", "jamesoliver@hotmail.com", "London", 300.00);
 //        Chef chef2 = new Chef(2, "Gordon Ramsey", "gordon@ramsey.com", "London", 500.00);
 //        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + testPerson.getMainIngredient() + "%' AND (LOWER(meal_time) = LOWER(" + MealTime.SNACK + ")) AND LOWER(difficulty) = LOWER('" + testPerson.getDifficulty() + "')";
-//        Meals expected = new Meals(2, "Pasta Salad", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Kielbasa", "Noodles"), "https://www.inspiredtaste.net/38019/easy-pasta-salad-recipe/#itr-recipe-38019", MealTime.SNACK, null);
-//        given(fakeMealDao.selectMealByPerson(sql, testPerson.getWantHelp())).willReturn(expected);
-//
-//        //WHEN
-//        Meals actual = underTest.selectMealByPerson(testPerson);
-//
-//        //THEN
-//        assertThat(actual).isEqualTo(expected);
-//    }
+        Person testPerson = new Person("kielbasa", Difficulty.BEGINNER, false);
+        Meals expected = new Meals(2, "Pasta Salad", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Kielbasa", "Noodles"), "https://www.inspiredtaste.net/38019/easy-pasta-salad-recipe/#itr-recipe-38019", MealTime.SNACK, null);
+        given(fakeMealDao.selectMealByPerson(anyString(), anyBoolean())).willReturn(expected);
 
-//    @Test
-//    void correctSQLForSingleIngredientReturned() {
-//        //GIVEN
-//        Person testPerson = new Person("chicken, rice", Difficulty.BEGINNER, false);
-//        //WHEN
-//        //THEN
-//    }
-//
-//    @Test
-//    void correctSQLForMultipleIngredientReturned() {
-//        //GIVEN
-//        //WHEN
-//        //THEN
-//    }
+        //WHEN
+        Meals actual = underTest.selectMealByPerson(testPerson);
+
+        //THEN
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void correctSQLForMultipleIngredientReturnedAndBreakfastTime() {
+        //GIVEN
+        Person testPerson = new Person("kielbasa, egg", Difficulty.BEGINNER, false);
+        Meals expected = new Meals(2, "Pasta Salad", Difficulty.BEGINNER, List.of(Allergies.DAIRY),  List.of("Kielbasa", "Noodles"), "https://www.inspiredtaste.net/38019/easy-pasta-salad-recipe/#itr-recipe-38019", MealTime.SNACK, null);
+        given(fakeMealDao.selectMealByPerson(anyString(), anyBoolean())).willReturn(expected);
+
+        //WHEN
+        Meals actual = underTest.selectMealByPerson(testPerson);
+
+        //THEN
+        assertThat(actual).isEqualTo(expected);
+    }
 
 }

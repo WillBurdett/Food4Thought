@@ -136,7 +136,7 @@ public class MealService {
 
         // determining the meal_time listed based on the time
         String personMealtime;
-        if (request.getLocalTime().getHour() < 9){
+        if (request.getLocalTime().getHour() < 11){
             personMealtime = "'BREAKFAST'";
         } else {
             personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN'";

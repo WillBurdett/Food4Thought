@@ -9,22 +9,26 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@DataJpaTest
 class MealsDataAccessServiceTest {
 
 //    private MealsDataAccessService underTest;
-//    private JdbcTemplate jdbcTemplate;
+//    private JdbcTemplate fakeJdbcTemplate;
+
 
     @BeforeEach
     void setUp() {
-//        underTest = new MealsDataAccessService(jdbcTemplate); //injecting mocked jdbcTemplate into underTest object
+//        fakeJdbcTemplate = mock(JdbcTemplate.class);
+//        underTest = new MealsDataAccessService(fakeJdbcTemplate); //injecting mocked jdbcTemplate into underTest object
     }
 
     @AfterEach
@@ -44,17 +48,16 @@ class MealsDataAccessServiceTest {
     @Test
     @Disabled
     void selectMealById() {
-        //GIVEN
-//        List<String> ingredients = Arrays.asList("Pasta", "Cheese");
-//        List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
-//        Meals testMeal = new Meals(null,"Pasta", Difficulty.BEGINNER, allergies, ingredients, "www.test_link.com", MealTime.MAIN, null);
-//        underTest.insertMeal(testMeal);
-
-        //WHEN
-//        Meals actual = underTest.selectMealById(1);
-
-        //THEN
-//        assertThat(actual).usingRecursiveComparison().ignoringFields("id").isEqualTo(testMeal);
+//        ReflectionTestUtils.setField(underTest, "jdbcTemplate", fakeJdbcTemplate);
+//        String sql = """
+//                SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time
+//                 FROM meals
+//                 WHERE meals.id=?
+//                 """;
+//        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, List.of(Allergies.DAIRY), List.of("Pasta", "Cheese"), "http://www.test_link.com", MealTime.MAIN, null);
+//        when(fakeJdbcTemplate.queryForObject(sql, Meals.class)).thenReturn(pasta);
+//
+//        assertThat(underTest.selectMealById(1)).isEqualTo(pasta);
     }
 
     @Test
