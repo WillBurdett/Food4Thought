@@ -1,6 +1,8 @@
 package com.will.Food4Thought.chef;
 
-import com.will.Food4Thought.meal.RowNotChangedException;
+import com.will.Food4Thought.chef.chef_exceptions.ChefNotFoundException;
+import com.will.Food4Thought.chef.chef_exceptions.EmailInvalidException;
+import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,21 +18,31 @@ public class ChefService {
 
     //Selecting all Chefs
     public List<Chef> selectAllChefs() {
+        List<Chef> chefs = chefDAO.selectAllChefs();
         if (chefDAO.selectAllChefs() == null) {
             throw new IllegalStateException("No chef(s) available.");
         }
-        return chefDAO.selectAllChefs();
+        if (chefs.size() == 0){
+            throw new ChefNotFoundException("No chefs found on system.");
+        }
+        return chefs;
     }
 
     //Selecting Chef By ID
     public Chef selectChefById(Integer chefId) {
-        try {
-            return chefDAO.selectChefById(chefId);
-        } catch (IllegalStateException e) {
+        Chef chef = null;
+        for (Chef c : selectAllChefs()) {
+            if (c.getId().equals(chefId)){
+                chef = chefDAO.selectChefById(chefId);
+            }
+        }
+        if (chef == null){
             throw new ChefNotFoundException("Chef not found by id " + chefId + ".");
-        } }
+        }
+        return chef;
+    }
 
-        // Checking if the chef is already in the database by email entered
+    // Checking if the chef is already in the database by email entered
     public boolean checkIfEmailIsThere (String email){
         for (Chef selectAllChef : chefDAO.selectAllChefs()) {
             if (selectAllChef.getEmail().equals(email)) {

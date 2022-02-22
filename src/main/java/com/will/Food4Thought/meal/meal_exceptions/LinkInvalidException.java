@@ -1,4 +1,4 @@
-package com.will.Food4Thought.meal;
+package com.will.Food4Thought.meal.meal_exceptions;
 
 
 import org.springframework.http.HttpStatus;

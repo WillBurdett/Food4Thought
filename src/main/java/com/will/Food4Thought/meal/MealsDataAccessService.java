@@ -3,6 +3,7 @@ package com.will.Food4Thought.meal;
 
 import com.will.Food4Thought.chef.Chef;
 import com.will.Food4Thought.chef.ChefMapper;
+import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
 import com.will.Food4Thought.meal.utils.Utilities;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,7 @@ public class MealsDataAccessService implements MealDAO {
                 FROM meals;
                 """;
 
-        return jdbcTemplate.query(sql, new RowMapper());
+        return jdbcTemplate.query(sql, new MealMapper());
     }
 
     @Override
@@ -39,7 +40,7 @@ public class MealsDataAccessService implements MealDAO {
                  FROM meals 
                  WHERE meals.id=?
                  """;
-        return jdbcTemplate.queryForObject(sql, new RowMapper(), id);
+        return jdbcTemplate.queryForObject(sql, new MealMapper(), id);
     }
 
 
@@ -87,7 +88,7 @@ public class MealsDataAccessService implements MealDAO {
 
     @Override
     public Meals selectMealByPerson(String sql, Boolean wantHelp){
-        List<Meals> meals = jdbcTemplate.query(sql, new RowMapper());
+        List<Meals> meals = jdbcTemplate.query(sql, new MealMapper());
         if (meals == null){
             throw new MealNotFoundException("Sorry! A meal could not be found meeting your criteria. Please try again with different criteria.");
         }

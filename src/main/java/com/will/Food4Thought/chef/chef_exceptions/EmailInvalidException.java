@@ -1,4 +1,4 @@
-package com.will.Food4Thought.chef;
+package com.will.Food4Thought.chef.chef_exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -7,6 +7,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EmailInvalidException extends IllegalStateException{
     public EmailInvalidException(String message) {
         super(message);
-
     }
 }
