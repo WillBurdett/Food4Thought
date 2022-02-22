@@ -49,7 +49,7 @@ public class ChefService {
 
 
     // Checking if the chef is already in the database by email entered
-    public boolean checkIfEmailIsThere (String email){
+    public boolean checkIfEmailIsUnique(String email){
         for (Chef selectAllChef : chefDAO.selectAllChefs()) {
             if (selectAllChef.getEmail().equals(email)) {
                 throw new EmailInvalidException("Email already on system.");
@@ -61,39 +61,45 @@ public class ChefService {
     //Inserting a Chef but validating the email before (makes sure you can't put more than 20 characters before the @).
     public void insertChef (Chef chefs){
 
-        if (checkIfEmailIsThere(chefs.getEmail())) {
-            if ((Utilities.validateEmail(chefs.getEmail())))
-            {if (chefs.getPrice()<= 0){
-                    throw new PriceInvalidException("Price must be higher than 0.");
-                }
-                chefDAO.insertChef(chefs);
-            } else throw new EmailInvalidException("Please re-enter your email again.");
+        int rowsChanged = 0;
+        if (checkIfEmailIsUnique(chefs.getEmail()) && Utilities.validateEmail(chefs.getEmail()) && Utilities.validatePrice(chefs.getPrice())) {
+
+            rowsChanged = chefDAO.insertChef(chefs);
         }
-        if (chefDAO.insertChef(chefs) != 1) {
-                    throw new RowNotChangedException("Chef " + chefs.getName() + " not added.");
+        if (rowsChanged != 1) {
+            throw new RowNotChangedException("Chef " + chefs.getName() + " not added.");
         }
-    }
+        }
+
 
 
 
 
     //Deleting Chef by ID
     public void deleteChef (Integer chefId){
-        if (chefDAO.selectChefById(chefId) != null) {
-            chefDAO.deleteChefById(chefId);
-        } else if (chefDAO.deleteChefById(chefId) != 1) {
-            throw new RowNotChangedException("Chef with id " + chefId + "was not deleted.");
+        int rowsChanged = 0;
+        if (chefDAO.selectChefById(chefId) == null){
+            throw new ChefNotFoundException("Chef with id " + chefId + " could not be found.");
+        } else if (chefDAO.selectChefById(chefId) != null) {
+            rowsChanged = chefDAO.deleteChefById(chefId);
+        }
+
+        if (rowsChanged != 1) {
+            throw new RowNotChangedException("Chef with id " + chefId + " was not deleted.");
         }
     }
 
     //Updating Chef by ID
     public void updateChefsById (Integer chefId, Chef update){
-        if (chefDAO.selectChefById(chefId) != null ) {
-            if (update.getPrice()<= 0){
-                throw new PriceInvalidException("Price must be higher than 0");
-            }
-            chefDAO.updateChefsById(chefId, update);
-        } else if (chefDAO.updateChefsById(chefId, update) != 1) {
+
+        int rowsChanged = 0;
+        if (chefDAO.selectChefById(chefId) == null ) {
+            throw new ChefNotFoundException("Chef with id " + chefId + " could not be found.");
+        } else if (chefDAO.selectChefById(chefId) != null && Utilities.validatePrice(update.getPrice()) && Utilities.validateEmail(update.getEmail())) {
+            rowsChanged = chefDAO.updateChefsById(chefId, update);
+        }
+        if (rowsChanged != 1) {
+
             throw new RowNotChangedException("Chef with id " + chefId + " was not updated.");
         }
     }

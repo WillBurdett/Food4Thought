@@ -1,4 +1,4 @@
-package com.will.Food4Thought;
+package com.will.Food4Thought.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

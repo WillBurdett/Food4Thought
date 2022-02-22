@@ -1,8 +1,8 @@
 package com.will.Food4Thought.meal;
 
-import com.will.Food4Thought.Allergies;
-import com.will.Food4Thought.Difficulty;
-import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.enums.Allergies;
+import com.will.Food4Thought.enums.Difficulty;
+import com.will.Food4Thought.enums.MealTime;
 import com.will.Food4Thought.chef.Chef;
 
 import java.util.List;

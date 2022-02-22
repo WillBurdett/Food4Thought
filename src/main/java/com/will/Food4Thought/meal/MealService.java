@@ -125,7 +125,7 @@ public class MealService {
         String ingredientBuilder = "";
         for (int i = 0; i < personIngredientArr.length; i++) {
             if (i + 1 == personIngredientArr.length) {
-                ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%'";
+                ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%')";
             } else {
                 ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%' OR ";
             }
@@ -136,12 +136,12 @@ public class MealService {
 
         // determining the meal_time listed based on the time
         String personMealtime;
-        if (request.getLocalTime().getHour() < 9){
+        if (request.getLocalTime().getHour() < 11){
             personMealtime = "'BREAKFAST'";
         } else {
             personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN'";
         }
-        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE " + ingredientBuilder + " AND (LOWER(meal_time) = LOWER(" + personMealtime + ")) AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
+        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE (" + ingredientBuilder + " AND (LOWER(meal_time) = LOWER(" + personMealtime + ")) AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
         Meals meal = mealDAO.selectMealByPerson(sql, personWantsHelp);
         return meal;
     }
