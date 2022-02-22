@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 public class Utilities {
 
-
     public static boolean validateEmail(String email) {
         //  [\\w-] - any character (letter or number) & contain -
         //   {1,20} any number of character between 1-20
@@ -24,14 +23,11 @@ public class Utilities {
 
     }
 
-
     public static boolean validatePrice(Double price) {
         if (price <= 0) {
             throw new PriceInvalidException("Please enter a valid price.");
         }
-
         return true;
     }
-
 }
 

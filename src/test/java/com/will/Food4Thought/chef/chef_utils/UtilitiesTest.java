@@ -21,7 +21,6 @@ class UtilitiesTest {
     @Test
     void validateInvalidEmailThrowingException() {
         //GIVEN
-
         String email = "bobhotmail.com";
 
         //WHEN
@@ -33,24 +32,33 @@ class UtilitiesTest {
     }
 
     @Test
-    void validateEmailNotThrowingException() {
+    void validateEmailReturnsTrueWithValidEmail() {
         //GIVEN
-
         String email = "bob@hotmail.com";
 
         //WHEN
-
         boolean actual = underTest.validateEmail(email);
         // THEN
         assertThat(actual).isTrue();
     }
 
+    @Test
+    void validatePriceReturnsTrueWhenValid(){
+        // GIVEN
+        Double price = 200.00;
+
+        // WHEN
+        boolean actual = underTest.validatePrice(price);
+        boolean expected = true;
+
+        // THEN
+        assertThat(actual).isEqualTo(expected);
+    }
 
     @Test
     void validateInvalidPriceThrowingAnException() {
-        //Given
+        // GIVEN
         Double price = 0.00;
-
 
         //WHEN
         assertThatThrownBy(() -> {
@@ -59,7 +67,6 @@ class UtilitiesTest {
         }).isInstanceOf(PriceInvalidException.class)
                 .hasMessage("Please enter a valid price.");
     }
-
 
     @Test
     void validateValidPriceNotThrowingAnException() {
@@ -71,7 +78,5 @@ class UtilitiesTest {
         boolean actual = underTest.validatePrice(price);
         // THEN
         assertThat(actual).isTrue();
-
     }
-
 }
