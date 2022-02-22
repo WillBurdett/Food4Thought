@@ -1,16 +1,14 @@
 package com.will.Food4Thought.dao;
 
 
-import com.will.Food4Thought.Difficulty;
-import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.enums.Difficulty;
+import com.will.Food4Thought.enums.MealTime;
 import com.will.Food4Thought.meal.Meals;
 import com.will.Food4Thought.meal.MealsDataAccessService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;

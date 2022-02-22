@@ -79,9 +79,13 @@ public class ChefService {
 
     //Updating Chef by ID
     public void updateChefsById (Integer chefId, Chef update){
-        if (chefDAO.selectChefById(chefId) != null ) {
-            chefDAO.updateChefsById(chefId, update);
-        } else if (chefDAO.updateChefsById(chefId, update) != 1) {
+        int rowsChanged = 0;
+        if (chefDAO.selectChefById(chefId) == null ) {
+            throw new ChefNotFoundException("Chef with id " + chefId + " could not be found.");
+        } else if (chefDAO.selectChefById(chefId) != null) {
+            rowsChanged = chefDAO.updateChefsById(chefId, update);
+        }
+        if (rowsChanged != 1) {
             throw new RowNotChangedException("Chef with id " + chefId + " was not updated.");
         }
     }

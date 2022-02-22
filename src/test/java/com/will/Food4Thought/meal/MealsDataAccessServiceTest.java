@@ -1,18 +1,10 @@
 package com.will.Food4Thought.meal;
 
-import com.will.Food4Thought.Allergies;
-import com.will.Food4Thought.Difficulty;
-import com.will.Food4Thought.MealTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,6 +1,6 @@
 package com.will.Food4Thought.person;
 
-import com.will.Food4Thought.Difficulty;
+import com.will.Food4Thought.enums.Difficulty;
 
 import java.time.LocalTime;
 import java.util.Objects;

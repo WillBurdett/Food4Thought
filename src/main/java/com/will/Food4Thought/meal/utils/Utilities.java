@@ -1,6 +1,6 @@
 package com.will.Food4Thought.meal.utils;
 
-import com.will.Food4Thought.Allergies;
+import com.will.Food4Thought.enums.Allergies;
 
 import java.util.ArrayList;
 import java.util.List;

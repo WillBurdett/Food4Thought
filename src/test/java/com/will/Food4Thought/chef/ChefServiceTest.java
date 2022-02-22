@@ -6,8 +6,7 @@ import com.will.Food4Thought.meal.MealService;
 import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.springframework.dao.EmptyResultDataAccessException;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,7 +219,6 @@ class ChefServiceTest {
     void DeleteChef_ThrowsExceptionIfRowUnchanged(){
         // GIVEN
         Chef chef1 = new Chef(1,"Bob", "bob@aol.com", "Brixton", 25.00);
-        List<Chef> chefs = Arrays.asList(chef1);
         when(fakeChefDao.selectChefById(1)).thenReturn(chef1);
         when(fakeChefDao.deleteChefById(1)).thenReturn(0);
 
@@ -234,6 +232,49 @@ class ChefServiceTest {
     }
     @Test
     void updateChefsById_UpdatesChefWithValidId(){
+        // GIVEN
+        Chef chef1 = new Chef(1, "Bob", "bob@aol.com", "Brixton", 25.00);
+        Chef chef1updated = new Chef(1, "Bob", "bob@aol.com", "Ealing", 25.00);
+        when(fakeChefDao.selectChefById(1)).thenReturn(chef1);
+        when(fakeChefDao.updateChefsById(1, chef1updated)).thenReturn(1);
 
+        // WHEN
+        underTest.updateChefsById(1, chef1updated);
+
+        // THEN
+        verify(fakeChefDao).updateChefsById(1, chef1updated);
+    }
+
+    @Test
+    void updateChefsById_CanHandleIdDoesNotExist() {
+        // GIVEN
+        Chef chef1 = new Chef(1,"Bob", "bob@aol.com", "Brixton", 25.00);
+        Chef chef1updated = new Chef(1,"Bobby", "bob@aol.com", "Brixton", 25.00);
+        List<Chef> chefs = Arrays.asList(chef1);
+        when(fakeChefDao.selectChefById(2)).thenReturn(null);
+
+        // WHEN
+        assertThatThrownBy(() -> {
+            underTest.updateChefsById(2, chef1updated);
+            // THEN
+        }).isInstanceOf(IllegalStateException.class)
+                .hasMessage("Chef with id 2 could not be found.");
+        verify(fakeChefDao, never()).updateChefsById(2, chef1updated);
+    }
+
+    @Test
+    void updateChefsById_ThrowsExceptionIfRowUnchanged() {
+        // GIVEN
+        Chef chef1 = new Chef(1,"Bob", "bob@aol.com", "Brixton", 25.00);
+        when(fakeChefDao.selectChefById(1)).thenReturn(chef1);
+        when(fakeChefDao.updateChefsById(1, chef1)).thenReturn(0);
+
+        // WHEN
+        assertThatThrownBy(() -> {
+            underTest.updateChefsById(1, chef1);
+            // THEN
+        }).isInstanceOf(IllegalStateException.class)
+                .hasMessage("Chef with id 1 was not updated.");
+        verify(fakeChefDao).updateChefsById(1, chef1);
     }
 }
