@@ -43,7 +43,7 @@ public class ChefService {
     }
 
     // Checking if the chef is already in the database by email entered
-    public boolean checkIfEmailIsThere (String email){
+    public boolean checkIfEmailIsUnique(String email){
         for (Chef selectAllChef : chefDAO.selectAllChefs()) {
             if (selectAllChef.getEmail().equals(email)) {
                 throw new EmailInvalidException("Email already on system.");
@@ -54,9 +54,11 @@ public class ChefService {
 
     //Inserting a Chef
     public void insertChef (Chef chefs){
-        if (checkIfEmailIsThere(chefs.getEmail())) {
-            chefDAO.insertChef(chefs);
-        } else if (chefDAO.insertChef(chefs) != 1) {
+        int rowsChanged = 0;
+        if (checkIfEmailIsUnique(chefs.getEmail())) {
+            rowsChanged = chefDAO.insertChef(chefs);
+        }
+        if (rowsChanged != 1) {
                     throw new RowNotChangedException("Chef " + chefs.getName() + " not added.");
         }
     }

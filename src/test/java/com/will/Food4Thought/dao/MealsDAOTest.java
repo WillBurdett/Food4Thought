@@ -57,4 +57,5 @@ public class MealsDAOTest {
         assertEquals(expected, actual);
 
     }
+
 }
