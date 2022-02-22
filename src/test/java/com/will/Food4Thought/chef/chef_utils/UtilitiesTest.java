@@ -5,17 +5,19 @@ import com.will.Food4Thought.chef.chef_exceptions.PriceInvalidException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.text.Utilities;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UtilitiesTest {
     //declares it
-    private Utilities underTest;
+    private ChefUtilities underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new Utilities();
+        underTest = new ChefUtilities();
     }
 
     @Test
@@ -23,7 +25,7 @@ class UtilitiesTest {
         //GIVEN
         String email = "bobhotmail.com";
 
-        //WHEN
+        // WHEN
         assertThatThrownBy(() -> {
             underTest.validateEmail(email);
             // THEN

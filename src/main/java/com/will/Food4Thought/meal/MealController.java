@@ -31,7 +31,7 @@ public class MealController {
         return mealService.selectMealById(mealId);
     }
 
-    @GetMapping(path = "meals/person")
+    @GetMapping(path = "user")
     public Meals getMealsByPerson(@RequestBody Person person){
         return mealService.selectMealByPerson(person);
     }
