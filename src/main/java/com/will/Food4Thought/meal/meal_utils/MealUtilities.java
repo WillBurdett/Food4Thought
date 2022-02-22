@@ -1,11 +1,11 @@
-package com.will.Food4Thought.meal.utils;
+package com.will.Food4Thought.meal.meal_utils;
 
 import com.will.Food4Thought.enums.Allergies;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utilities {
+public class MealUtilities {
 
     public String ingredientsInfo (List<String> ingredients){
         if (ingredients == null){

@@ -6,8 +6,7 @@ import com.will.Food4Thought.chef.chef_exceptions.PriceInvalidException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utilities {
-
+public class ChefUtilities {
 
     public static boolean validateEmail(String email) {
         //  [\\w-] - any character (letter or number) & contain -
@@ -21,17 +20,13 @@ public class Utilities {
             throw new EmailInvalidException("Please re-enter your email again.");
         }
         return true;
-
     }
-
 
     public static boolean validatePrice(Double price) {
         if (price <= 0) {
             throw new PriceInvalidException("Please enter a valid price.");
         }
-
         return true;
     }
-
 }
 

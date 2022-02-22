@@ -17,26 +17,27 @@ public class ChefController {
         this.chefService=chefService;
     }
 
-   @GetMapping(path="chefs")
-   public List<Chef> getAllChefs (){
+    @GetMapping(path="chefs")
+    public List<Chef> getAllChefs (){
        return chefService.selectAllChefs();
    }
 
-   @GetMapping(path ="chefs/{id}")
-   public Chef getChefById(@PathVariable("id") Integer chefId){
+    @GetMapping(path ="chefs/{id}")
+    public Chef getChefById(@PathVariable("id") Integer chefId){
         return chefService.selectChefById(chefId);
    }
-@PostMapping(path="chefs")
+
+    @PostMapping(path="chefs")
     public void insertChef(@RequestBody Chef chef){
         chefService.insertChef(chef);
 }
 
-@DeleteMapping(path="chefs/{id}")
+    @DeleteMapping(path="chefs/{id}")
     public void deleteChefById(@PathVariable("id")Integer chefId){
         chefService.deleteChef(chefId);
 }
 
-@PutMapping(path="chefs/{id}")
+    @PutMapping(path="chefs/{id}")
     public void updateChefsById(@PathVariable("id") Integer chefId, @RequestBody Chef update){
         chefService.updateChefsById(chefId,update);
 }

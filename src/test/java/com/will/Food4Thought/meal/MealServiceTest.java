@@ -47,7 +47,7 @@ class MealServiceTest {
 
     @Test
     void allMealsShown() {
-        //Happy path
+
         //GIVEN
         List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
         List<String> lasagneIngredients = Arrays.asList("Lasagne", "Cheese");

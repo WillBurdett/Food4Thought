@@ -4,7 +4,7 @@ package com.will.Food4Thought.meal;
 import com.will.Food4Thought.chef.Chef;
 import com.will.Food4Thought.chef.ChefMapper;
 import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
-import com.will.Food4Thought.meal.utils.Utilities;
+import com.will.Food4Thought.meal.meal_utils.MealUtilities;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +19,7 @@ public class MealsDataAccessService implements MealDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    Utilities utilities = new Utilities();
+    MealUtilities mealUtilities = new MealUtilities();
 
     @Override
     public List<Meals> selectAllMeals() {
@@ -53,9 +53,9 @@ public class MealsDataAccessService implements MealDAO {
         int rowsAffected = jdbcTemplate.update(
                 sql,
                 meal.getName(),
-                utilities.allergyInfo(meal.getAllergyInfo()),
+                mealUtilities.allergyInfo(meal.getAllergyInfo()),
                 String.valueOf(meal.getDifficulty().toString()),
-                utilities.ingredientsInfo(meal.getIngredients()),
+                mealUtilities.ingredientsInfo(meal.getIngredients()),
                 meal.getSteps(),
                 String.valueOf(meal.getMealTime().toString())
         );
@@ -74,9 +74,9 @@ public class MealsDataAccessService implements MealDAO {
         String sql= "UPDATE meals SET name = ?, allergy_info=?, difficulty =?, ingredients =?, steps =?, meal_time=? WHERE id =?";
 
         int rowAffected = jdbcTemplate.update(sql,update.getName(),
-                utilities.allergyInfo(update.getAllergyInfo()),
+                mealUtilities.allergyInfo(update.getAllergyInfo()),
                 String.valueOf(update.getDifficulty().toString()),
-                utilities.ingredientsInfo(update.getIngredients()),
+                mealUtilities.ingredientsInfo(update.getIngredients()),
                 update.getSteps(),
                 String.valueOf(update.getMealTime().toString()),id);
 

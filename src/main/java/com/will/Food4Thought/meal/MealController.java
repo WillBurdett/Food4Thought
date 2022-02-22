@@ -49,7 +49,5 @@ public class MealController {
     @PutMapping(path = "meals/{id}")
     public void updateById(@PathVariable("id") Integer mealId, @RequestBody Meals update ){
         mealService.updateById(mealId,update);
-
     }
-
 }
