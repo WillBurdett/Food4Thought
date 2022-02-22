@@ -65,10 +65,15 @@ public class ChefService {
 
     //Deleting Chef by ID
     public void deleteChef (Integer chefId){
-        if (chefDAO.selectChefById(chefId) != null) {
-            chefDAO.deleteChefById(chefId);
-        } else if (chefDAO.deleteChefById(chefId) != 1) {
-            throw new RowNotChangedException("Chef with id " + chefId + "was not deleted.");
+        int rowsChanged = 0;
+        if (chefDAO.selectChefById(chefId) == null){
+            throw new ChefNotFoundException("Chef with id " + chefId + " could not be found.");
+        } else if (chefDAO.selectChefById(chefId) != null) {
+            rowsChanged = chefDAO.deleteChefById(chefId);
+        }
+
+        if (rowsChanged != 1) {
+            throw new RowNotChangedException("Chef with id " + chefId + " was not deleted.");
         }
     }
 

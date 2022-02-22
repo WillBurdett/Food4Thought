@@ -151,6 +151,24 @@ class ChefServiceTest {
     }
 
     @Test
+    void insertChef_ThrowsExceptionIfEmailAlreadyExists(){
+        // GIVEN
+        Chef chef1 = new Chef("Bob", "bob@aol.com", "Brixton", 25.00);
+        Chef chef2 = new Chef("Melissa", "bob@aol.com", "Wandsworth Town", 25.00);
+        List<Chef> chefs = Arrays.asList(chef1);
+        when(fakeChefDao.selectAllChefs()).thenReturn(chefs);
+        when(fakeChefDao.insertChef(chef2)).thenReturn(1);
+
+        // WHEN
+        assertThatThrownBy(() -> {
+            underTest.insertChef(chef2);
+            // THEN
+        }).isInstanceOf(IllegalStateException.class)
+                .hasMessage("Email already on system.");
+        verify(fakeChefDao, never()).insertChef(chef2);
+    }
+
+    @Test
     void insertChef_ThrowsExceptionIfRowUnchanged(){
         // GIVEN
         Chef chef1 = new Chef("Bob", "bob@aol.com", "Brixton", 25.00);
@@ -166,5 +184,56 @@ class ChefServiceTest {
         }).isInstanceOf(IllegalStateException.class)
                 .hasMessage("Chef Melissa not added.");
         verify(fakeChefDao).insertChef(chef2);
+    }
+
+    @Test
+    void DeleteChef_DeletesChefWithCorrectId(){
+        // GIVEN
+        Chef chef1 = new Chef(1, "Bob", "bob@aol.com", "Brixton", 25.00);
+        when(fakeChefDao.selectChefById(1)).thenReturn(chef1);
+        when(fakeChefDao.deleteChefById(1)).thenReturn(1);
+
+        // WHEN
+        underTest.deleteChef(1);
+
+        // THEN
+        verify(fakeChefDao).deleteChefById(1);
+    }
+
+    @Test
+    void DeleteChef_ThrowsExceptionIfIdNotFound(){
+        // GIVEN
+        Chef chef1 = new Chef("Bob", "bob@aol.com", "Brixton", 25.00);
+        List<Chef> chefs = Arrays.asList(chef1);
+        when(fakeChefDao.selectAllChefs()).thenReturn(chefs);
+
+        // WHEN
+        assertThatThrownBy(() -> {
+            underTest.deleteChef(2);
+            // THEN
+        }).isInstanceOf(IllegalStateException.class)
+                .hasMessage("Chef with id 2 could not be found.");
+        verify(fakeChefDao, never()).deleteChefById(2);
+    }
+
+    @Test
+    void DeleteChef_ThrowsExceptionIfRowUnchanged(){
+        // GIVEN
+        Chef chef1 = new Chef(1,"Bob", "bob@aol.com", "Brixton", 25.00);
+        List<Chef> chefs = Arrays.asList(chef1);
+        when(fakeChefDao.selectChefById(1)).thenReturn(chef1);
+        when(fakeChefDao.deleteChefById(1)).thenReturn(0);
+
+        // WHEN
+        assertThatThrownBy(() -> {
+            underTest.deleteChef(1);
+            // THEN
+        }).isInstanceOf(IllegalStateException.class)
+                .hasMessage("Chef with id 1 was not deleted.");
+        verify(fakeChefDao).deleteChefById(1);
+    }
+    @Test
+    void updateChefsById_UpdatesChefWithValidId(){
+
     }
 }
