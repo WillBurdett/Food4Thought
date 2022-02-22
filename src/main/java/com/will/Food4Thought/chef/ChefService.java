@@ -1,5 +1,6 @@
 package com.will.Food4Thought.chef;
 
+import com.will.Food4Thought.chef.chef_exceptions.PriceInvalidException;
 import com.will.Food4Thought.chef.chef_utils.Utilities;
 import com.will.Food4Thought.chef.chef_exceptions.ChefNotFoundException;
 import com.will.Food4Thought.chef.chef_exceptions.EmailInvalidException;
@@ -61,7 +62,10 @@ public class ChefService {
     public void insertChef (Chef chefs){
 
         if (checkIfEmailIsThere(chefs.getEmail())) {
-            if ((Utilities.validateEmail(chefs.getEmail()))) {
+            if ((Utilities.validateEmail(chefs.getEmail())))
+            {if (chefs.getPrice()<= 0){
+                    throw new PriceInvalidException("Price must be higher than 0.");
+                }
                 chefDAO.insertChef(chefs);
             } else throw new EmailInvalidException("Please re-enter your email again.");
         }
@@ -85,6 +89,9 @@ public class ChefService {
     //Updating Chef by ID
     public void updateChefsById (Integer chefId, Chef update){
         if (chefDAO.selectChefById(chefId) != null ) {
+            if (update.getPrice()<= 0){
+                throw new PriceInvalidException("Price must be higher than 0");
+            }
             chefDAO.updateChefsById(chefId, update);
         } else if (chefDAO.updateChefsById(chefId, update) != 1) {
             throw new RowNotChangedException("Chef with id " + chefId + " was not updated.");

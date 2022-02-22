@@ -10,5 +10,3 @@ public class PriceInvalidException extends IllegalStateException {
             super(message);
         }
     }
-
-}

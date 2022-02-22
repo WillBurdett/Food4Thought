@@ -1,6 +1,7 @@
 package com.will.Food4Thought.chef.chef_utils;
 
 import com.will.Food4Thought.chef.chef_exceptions.EmailInvalidException;
+import com.will.Food4Thought.chef.chef_exceptions.PriceInvalidException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,15 +25,6 @@ public class Utilities {
             return matcher.matches();
 
             }
-
-
-
-    // check the price input for chef is above 0
-    public static boolean minimumPrice (Double price) {
-        if (Double price <= 0){
-            throw new
-        }
-    }
 
 }
 
