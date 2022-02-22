@@ -115,18 +115,28 @@ public class MealService {
         Person request = new Person(person.getMainIngredient(), person.getDifficulty(), person.getWantHelp());
 
         // person values saved to placeholders to make sql string concatenation easier
-        String personIngredients = request.getMainIngredient().toLowerCase();
+        String personIngredients = request.getMainIngredient().toLowerCase().replaceAll(" ", "");
+        String[] personIngredientArr = personIngredients.split(",");
+        String ingredientBuilder = "";
+        for (int i = 0; i < personIngredientArr.length; i++) {
+            if (i + 1 == personIngredientArr.length) {
+                ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%'";
+            } else {
+                ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%' OR ";
+            }
+        }
+
         String personDifficulty = String.valueOf(request.getDifficulty());
         Boolean personWantsHelp = request.getWantHelp();
 
         // determining thr meal_time listed based on the time
         String personMealtime;
-        if (request.getLocalTime().getHour() < 11){
+        if (request.getLocalTime().getHour() < 9){
             personMealtime = "'BREAKFAST'";
         } else {
             personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN'";
         }
-        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + personIngredients + "%' AND (LOWER(meal_time) = LOWER(" + personMealtime + ")) AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
+        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE " + ingredientBuilder + " AND (LOWER(meal_time) = LOWER(" + personMealtime + ")) AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
         Meals meal = mealDAO.selectMealByPerson(sql, personWantsHelp);
         return meal;
     }
