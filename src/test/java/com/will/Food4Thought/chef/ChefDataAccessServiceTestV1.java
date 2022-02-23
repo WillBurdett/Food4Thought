@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJdbcTest
-class ChefDataAccessServiceTest extends AbstractTransactionalTestNGSpringContextTests {
+class ChefDataAccessServiceTestV1 extends AbstractTransactionalTestNGSpringContextTests {
 
     private ChefDataAccessService underTest;
     private JdbcTemplate jdbcTemplate;
