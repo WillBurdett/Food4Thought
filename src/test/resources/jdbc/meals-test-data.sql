@@ -1,4 +1,4 @@
-INSERT INTO meals VALUES (1, 'Jamaican Jerk Chicken', null, 'Intermediate', 'Chicken', 'https://www.foodandwine.com/recipes/jamaican-jerk-chicken', 'Main');
-INSERT INTO meals VALUES (2, 'Pasta Salad', 'Dairy', 'Beginner', 'Kielbasa,Noodles', 'https://www.inspiredtaste.net/38019/easy-pasta-salad-recipe/#itr-recipe-38019', 'Snack');
-INSERT INTO meals VALUES (3, 'Lasagna', 'Dairy', 'Beginner', 'Sausage,Noodles', 'https://www.simplyrecipes.com/recipes/lasagna/', 'Main');
-INSERT INTO meals VALUES (4, 'Hearty Pancakes', 'Soy, Wheat', 'Intermediate', 'Milk,Eggs,Corn Meal', 'https://www.myrecipes.com/recipe/hearty-pancakes', 'Breakfast');
+INSERT INTO meals VALUES (1, 'Test Meal 1', null, 'Intermediate', 'Chicken', 'https://www.testlink1.com', 'Main');
+INSERT INTO meals VALUES (2, 'Test Meal 2', 'Dairy', 'Beginner', 'Kielbasa,Noodles', 'https://www.testlink2.com', 'Snack');
+INSERT INTO meals VALUES (3, 'Test Meal 3', 'Dairy', 'Beginner', 'Sausage,Noodles', 'https://www.testlink3.com', 'Main');
+INSERT INTO meals VALUES (4, 'Test Meal 4', 'Soy, Wheat', 'Intermediate', 'Milk,Eggs,Corn Meal', 'https://www.testlink4.com', 'Breakfast');

@@ -1,17 +1,11 @@
 package com.will.Food4Thought.chef;
 
-import com.will.Food4Thought.enums.Allergies;
-import com.will.Food4Thought.enums.Difficulty;
-import com.will.Food4Thought.enums.MealTime;
-import com.will.Food4Thought.meal.Meals;
-import com.will.Food4Thought.meal.MealsDataAccessService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 
 import javax.sql.DataSource;
@@ -20,8 +14,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @DataJdbcTest
-@ActiveProfiles("test")
 class ChefDataAccessServiceTest extends AbstractTransactionalTestNGSpringContextTests {
 
     private ChefDataAccessService underTest;
