@@ -1,18 +1,15 @@
 package com.will.Food4Thought.meal;
 
-import com.will.Food4Thought.Allergies;
-import com.will.Food4Thought.Difficulty;
-import com.will.Food4Thought.MealTime;
+import com.will.Food4Thought.meal.meal_exceptions.LinkInvalidException;
+import com.will.Food4Thought.meal.meal_exceptions.MealNotAddedException;
+import com.will.Food4Thought.meal.meal_exceptions.MealNotFoundException;
+import com.will.Food4Thought.meal.meal_exceptions.RowNotChangedException;
 import com.will.Food4Thought.person.Person;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.List;
-
-import static com.will.Food4Thought.Difficulty.*;
 
 @Service
 public class MealService {
@@ -79,22 +76,26 @@ public class MealService {
 
     public void insertMeal(Meals meals) {
 
-        if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
-            mealDAO.insertMeal(meals);
-        }
-        if (mealDAO.insertMeal(meals) != 1) {
-            throw new RowNotChangedException("Meal with id " + meals.getId() + " was not added");
+        try {
+            if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
+                mealDAO.insertMeal(meals);
+            }
+        } catch (Exception e) {
+            throw new MealNotAddedException("Meal with id " + meals.getId() + " was not added");
+
         }
     }
 
 
     public void deleteMeal(Integer id) {
+        Integer x = 0;
         try {
             if(mealDAO.selectMealById(id)!=null) {
-                mealDAO.deleteMeals(id);
-            }else if(mealDAO.deleteMeals(id)!=1){
-                    throw new RowNotChangedException("Meal with id " +  id + " was not deleted");
-                }
+                x = mealDAO.deleteMeals(id);
+            }
+            else if(x != 1){
+                throw new RowNotChangedException("Meal with id " +  id + " was not deleted");
+            }
     }catch(EmptyResultDataAccessException e) {
             throw new MealNotFoundException("Meal with id number "+ id + " does not exist");
             //This catches the EmptyResultDataAccessException thrown by JDBC template
@@ -119,18 +120,28 @@ public class MealService {
         Person request = new Person(person.getMainIngredient(), person.getDifficulty(), person.getWantHelp());
 
         // person values saved to placeholders to make sql string concatenation easier
-        String personIngredients = request.getMainIngredient().toLowerCase();
+        String personIngredients = request.getMainIngredient().toLowerCase().replaceAll(" ", "");
+        String[] personIngredientArr = personIngredients.split(",");
+        String ingredientBuilder = "";
+        for (int i = 0; i < personIngredientArr.length; i++) {
+            if (i + 1 == personIngredientArr.length) {
+                ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%')";
+            } else {
+                ingredientBuilder += "LOWER(ingredients) LIKE '%" + personIngredientArr[i] + "%' OR ";
+            }
+        }
+
         String personDifficulty = String.valueOf(request.getDifficulty());
         Boolean personWantsHelp = request.getWantHelp();
 
-        // determining thr meal_time listed based on the time
+        // determining the meal_time listed based on the time
         String personMealtime;
         if (request.getLocalTime().getHour() < 11){
             personMealtime = "'BREAKFAST'";
         } else {
-            personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN')";
+            personMealtime = "'SNACK') OR LOWER(meal_time) = LOWER('MAIN'";
         }
-        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE LOWER(ingredients) LIKE '%" + personIngredients + "%' AND LOWER(meal_time) = LOWER(" + personMealtime + ") AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
+        String sql = "SELECT id, name, allergy_info, difficulty, ingredients, steps, meal_time FROM meals WHERE (" + ingredientBuilder + " AND (LOWER(meal_time) = LOWER(" + personMealtime + ")) AND LOWER(difficulty) = LOWER('" + personDifficulty + "')";
         Meals meal = mealDAO.selectMealByPerson(sql, personWantsHelp);
         return meal;
     }
