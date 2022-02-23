@@ -8,6 +8,7 @@ import com.will.Food4Thought.meal.utils.Utilities;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Random;
 
@@ -15,9 +16,16 @@ import java.util.Random;
 public class MealsDataAccessService implements MealDAO {
 
     private JdbcTemplate jdbcTemplate;
+
     public MealsDataAccessService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    //setDataSource method added for the MealsDataAccessService Tests
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+    //----------------------------------------------------------------
 
     Utilities utilities = new Utilities();
 
