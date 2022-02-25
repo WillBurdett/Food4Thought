@@ -45,10 +45,10 @@ public class MealService {
 
         String firstSection = "https://";
         String anotherFirstSection = "http://";
-        if((steps.substring(0,8).equals(firstSection) || steps.substring(0,7).equals(anotherFirstSection)) ){
+        if(steps.substring(0,8).equals(firstSection) || steps.substring(0,7).equals(anotherFirstSection) ){
             return true;
-        }else {
-            throw new LinkInvalidException("Check link again");
+        } else {
+            throw new LinkInvalidException("Link not valid.");
         }
 
     }
@@ -67,19 +67,24 @@ public class MealService {
     public boolean isNameValid(String mealName){
         for (Meals meals : mealDAO.selectAllMeals()) {
             if(meals.getName().equals(mealName)){
-                throw new IllegalStateException(" Meal with same name found ");
+                throw new IllegalStateException("Meal with same name found.");
             }
         }
         return true;
     }
 
     public void insertMeal(Meals meals) {
+        if (!isStepsValid(meals.getSteps())){
+            throw new LinkInvalidException("Link was invalid.");
+        } else if (!isStepsPosted(meals.getSteps())){
+            throw new LinkInvalidException("Link already on system.");
+        } else if (!isNameValid(meals.getName())){
+            throw new IllegalStateException("Meal with same name found.");
+        }
         try {
-            if (isStepsValid(meals.getSteps()) && isStepsPosted(meals.getSteps()) && isNameValid(meals.getName())) {
                 mealDAO.insertMeal(meals);
-            }
-        } catch (Exception e) {
-            throw new MealNotAddedException("Meal with id " + meals.getId() + " was not added");
+        } catch (RowNotChangedException e) {
+            throw new MealNotAddedException("Meal could not be added.");
         }
     }
 
@@ -112,6 +117,7 @@ public class MealService {
     }
 
     public Meals selectMealByPerson(Person person) {
+
         // creating new person to return LocalTime.now()
         Person request = new Person(person.getMainIngredient(), person.getDifficulty(), person.getWantHelp());
 

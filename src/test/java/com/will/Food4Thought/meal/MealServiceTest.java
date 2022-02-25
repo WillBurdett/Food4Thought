@@ -145,7 +145,7 @@ class MealServiceTest {
         assertThatThrownBy(() -> {
             //WHEN
             Boolean actual = underTest.isStepsValid(steps);
-        }).hasMessage("Check link again");
+        }).hasMessage("Link not valid.");
     }
 
     @Test
@@ -175,7 +175,7 @@ class MealServiceTest {
             //WHEN
             Boolean actual = underTest.isNameValid(testName);
         }).isInstanceOf(IllegalStateException.class)
-                .hasMessage(" Meal with same name found ");
+                .hasMessage("Meal with same name found.");
     }
 
     @Test
@@ -183,7 +183,7 @@ class MealServiceTest {
         //GIVEN
         List<String> pastaIngredients = Arrays.asList("Pasta", "Cheese");
         List<Allergies> allergies = Arrays.asList(Allergies.DAIRY, Allergies.WHEAT);
-        Meals pasta = new Meals(1,"Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "http://www.test_link.com", MealTime.MAIN, null);
+        Meals pasta = new Meals("Pasta", Difficulty.BEGINNER, allergies, pastaIngredients, "https://www.test_link.com", MealTime.MAIN, null);
         ArgumentCaptor<Meals> captor = ArgumentCaptor.forClass(Meals.class);
 
         //WHEN
@@ -207,8 +207,8 @@ class MealServiceTest {
         assertThatThrownBy(() -> {
             //WHEN
             underTest.insertMeal(pasta);
-        }).isInstanceOf(MealNotAddedException.class)
-                .hasMessage("Meal with id " + 1 + " was not added");
+        }).isInstanceOf(LinkInvalidException.class)
+                .hasMessage("Link not valid.");
     }
 
     @Test
