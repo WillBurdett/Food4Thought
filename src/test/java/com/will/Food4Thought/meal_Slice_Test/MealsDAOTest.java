@@ -1,4 +1,4 @@
-package com.will.Food4Thought.meal_GET_from_Database;
+package com.will.Food4Thought.meal_Slice_Test;
 
 
 import com.will.Food4Thought.enums.Difficulty;
