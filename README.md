@@ -190,13 +190,13 @@ Example meal to Update (PUT):
 <br />
 
 
-| URL                | Request Type  | Description                                                           |
-| -------------      | ------------- | ---------------------                                                 |
-| .../chefs          | GET           | Gets all the meals from the meals schema                              |
-| .../chefs/{id}     | GET           | Gets a specific meal by ID                                            |
-| .../chefs          | POST          | Let's user with authentication post a meal to the meals schema        |
-| .../chefs/{id}     | DELETE        | Deletes a specific meal by ID                                         |
-| .../chefs/{id}     | UPDATE        | Updates a specific meal by ID with whateve is pass into request body  |
+| URL                | Request Type  | Description                                                             |
+| -------------      | ------------- | ---------------------                                                   |
+| .../chefs          | GET           | Gets all the chefs from the chefs schema                                |
+| .../chefs/{id}     | GET           | Gets a specific chef by ID                                              |
+| .../chefs          | POST          | Let's user with authentication post a chef to the chefs schema          |
+| .../chefs/{id}     | DELETE        | Deletes a specific chef by ID                                           |
+| .../chefs/{id}     | UPDATE        | Updates a specific chef by ID with whatever is passed into request body |
 
 <br />
 
