@@ -1,6 +1,7 @@
 # Food4Thought
 
-Project description : Our application, a Recipe Generator, takes input
+## Project description 
+Our application, a Recipe Generator, takes input
 from the user in the form of any number of ingredients they have, what
 cooking level they are at, and whether they require assistance from one
 of the chefs in our database. The program then returns a time-dependent
@@ -20,7 +21,6 @@ https://drive.google.com/drive/folders/11tlOq6IdTOSeiPLoZzu7z1W6SusLjkLj?usp=sha
 ```  
 CREATE DATABASE recipe\_generator;
 ```
-<br />
 
 ### Creating the meals schema:
 
@@ -43,7 +43,6 @@ CREATE TABLE meals (
 
 );
 ```
-<br />
 
 ### Creating the chefs schema:
 
@@ -62,7 +61,6 @@ CREATE TABLE chefs (
 
 );
 ```
-<br />
 
 ### Creating the matches schema (JOIN table):
 
@@ -78,12 +76,10 @@ CREATE TABLE matches (
 );
 ```
 <br />
-<br />
 
 ## Postman Instructions
 
-For basic requests users do not need to be logged in e.g. Get request
-localhost:8080/user
+For basic requests users do not need to be logged in e.g. GET requestlocalhost:8080/user
 ```
 {
 
@@ -106,7 +102,6 @@ The login details to be used are:
 **Username**: foo  
 **Password**: foo
 
-<br />
 
 ## Request Examples with Authorisation
 
@@ -120,6 +115,10 @@ The login details to be used are:
 | .../meals          | POST          | Let's user with authentication post a meal to the meals schema        |
 | .../meals/{id}     | DELETE        | Deletes a specific meal by ID                                         |
 | .../meals/{id}     | UPDATE        | Updates a specific meal by ID with whateve is pass into request body  |
+
+<br />
+
+Note - Replace the '...' above with localhost:8080 
 
 <br />
 
@@ -190,22 +189,23 @@ Example meal to Update (PUT):
 ### Interacting with the chefs schema
 <br />
 
-GET all chefs:
-```
-localhost:8080/chefs
-```
+
+| URL                | Request Type  | Description                                                           |
+| -------------      | ------------- | ---------------------                                                 |
+| .../chefs          | GET           | Gets all the meals from the meals schema                              |
+| .../chefs/{id}     | GET           | Gets a specific meal by ID                                            |
+| .../chefs          | POST          | Let's user with authentication post a meal to the meals schema        |
+| .../chefs/{id}     | DELETE        | Deletes a specific meal by ID                                         |
+| .../chefs/{id}     | UPDATE        | Updates a specific meal by ID with whateve is pass into request body  |
+
 <br />
 
-GET chef by ID:
-```
-localhost:8080/chef/1
-```
+Note - Replace the '...' above with localhost:8080 
+
 <br />
 
-POST a chef:
+Example chef to POST:
 ```
-localhost:8080/chefs
-
 {
 
     "name": "Eminem",
@@ -219,18 +219,10 @@ localhost:8080/chefs
 }
 ```
 <br />
-<br />
 
-DELETE chef by ID:
-```
-localhost:8080/meals/1
-```
-<br />
 
-Update (PUT) a chef:
+Example chef to Update (PUT):
 ```
-localhost:8080/meals/1
-
 {
 
     "name": "Sarah",
@@ -243,6 +235,9 @@ localhost:8080/meals/1
 
 }
 ```
+<br />
+<br />
+
 ## Contributors
 [Will Burdett](https://github.com/WillBurdett)  
 [Nayan Gurung](https://github.com/Nayan-grg)  
