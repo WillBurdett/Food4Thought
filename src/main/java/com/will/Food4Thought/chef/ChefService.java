@@ -17,6 +17,8 @@ public class ChefService {
         this.chefDAO = chefDAO;
     }
 
+    ChefUtilities chefUtilities = new ChefUtilities();
+
     //Selecting all Chefs
     public List<Chef> selectAllChefs() {
         List<Chef> chefs = chefDAO.selectAllChefs();
@@ -56,7 +58,7 @@ public class ChefService {
     //Inserting a Chef but validating the email before (makes sure you can't put more than 20 characters before the @).
     public void insertChef (Chef chefs){
         int rowsChanged = 0;
-        if (checkIfEmailIsUnique(chefs.getEmail()) && ChefUtilities.validateEmail(chefs.getEmail()) && ChefUtilities.validatePrice(chefs.getPrice())) {
+        if (checkIfEmailIsUnique(chefs.getEmail()) && chefUtilities.validateEmail(chefs.getEmail()) && chefUtilities.validatePrice(chefs.getPrice())) {
             rowsChanged = chefDAO.insertChef(chefs);
         }
         if (rowsChanged != 1) {
@@ -84,7 +86,7 @@ public class ChefService {
         int rowsChanged = 0;
         if (chefDAO.selectChefById(chefId) == null ) {
             throw new ChefNotFoundException("Chef with id " + chefId + " could not be found.");
-        } else if (chefDAO.selectChefById(chefId) != null && ChefUtilities.validatePrice(update.getPrice()) && ChefUtilities.validateEmail(update.getEmail())) {
+        } else if (chefDAO.selectChefById(chefId) != null && chefUtilities.validatePrice(update.getPrice()) && chefUtilities.validateEmail(update.getEmail())) {
             rowsChanged = chefDAO.updateChefsById(chefId, update);
         }
         if (rowsChanged != 1) {
