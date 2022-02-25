@@ -82,7 +82,7 @@ CREATE TABLE matches (
 
 ## Postman Instructions
 
-For basic requests users do not need to be logged in. E.g. Get request
+For basic requests users do not need to be logged in e.g. Get request
 localhost:8080/user
 ```
 {
@@ -109,28 +109,22 @@ The login details to be used are:
 <br />
 
 ## Request Examples with Authorisation
-<br />
 
 ### Interacting with the meals schema
 <br />
 
+| URL                | Request Type  | Description                                                           |
+| -------------      | ------------- | ---------------------                                                 |
+| .../meals          | GET           | Gets all the meals from the meals schema                              |
+| .../meals/{id}     | GET           | Gets a specific meal by ID                                            |
+| .../meals          | POST          | Let's user with authentication post a meal to the meals schema        |
+| .../meals/{id}     | DELETE        | Deletes a specific meal by ID                                         |
+| .../meals/{id}     | UPDATE        | Updates a specific meal by ID with whateve is pass into request body  |
 
-GET all the meals on our database:
-```
-localhost:8080/meals
-```
 <br />
 
-GET meal by ID:
+Example meal to POST:
 ```
-localhost:8080/meals/1
-```
-<br />
-
-POST a meal:
-```
-localhost:8080/meals
-
 {
 
     "name": "Eel Pie",
@@ -160,16 +154,9 @@ localhost:8080/meals
 ```
 <br />
 
-DELETE meal by ID:
-```
-localhost:8080/meals/1
-```
-<br />
 
-Update (PUT) a meal:
+Example meal to Update (PUT):
 ```
-localhost:8080/meals/1
-
 {
 
     "name": "Eel Pie",
