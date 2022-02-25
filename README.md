@@ -260,5 +260,5 @@ localhost:8080/meals/1
 [Will Burdett](https://github.com/WillBurdett)  
 [Nayan Gurung](https://github.com/Nayan-grg)  
 [Darshil Dholakia](https://github.com/DarshilDholakia)  
-[Abdi Qani](https://github.com/Abdiqaniafrah)  
-[Shirhan Mohammed](https://github.com/shirhan25) 
+[Abdiqani Afrah](https://github.com/Abdiqaniafrah)  
+[Shirhan Mohamed](https://github.com/shirhan25) 
