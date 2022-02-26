@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,38 +35,36 @@ class ChefDataAccessServiceTest {
         underTest.insertChef(expected);
         
         Chef actual = null;
-        for (Chef selectAllChef : underTest.selectAllChefs()) {
-            if(selectAllChef.getName().equals("james"));
-            actual=selectAllChef;
+        for (Chef chef : underTest.selectAllChefs()) {
+            if(chef.getName().equals("james"));
+            actual = chef;
         }
         assertThat(expected).isEqualTo(actual);
-
     }
 
     @Test
     void canDeleteChef() {
-        List<Chef> expected=new ArrayList<>();
-        underTest.deleteChefById(1);
+        Chef sue = new Chef(1,"Jennifer Lopez", "suelopez@gotmail.com","Grimsby", 75.00);
+        List<Chef> expected= Arrays.asList(sue);
+        underTest.deleteChefById(2);
         List<Chef> actual=underTest.selectAllChefs();
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void canSelectById(){
-        Chef expected = new Chef(1,"Sue Lopez", "suelopez@gotmail.com","Grimsby", 75.00);
+        Chef expected = new Chef(1,"Jennifer Lopez", "suelopez@gotmail.com","Grimsby", 75.00);
         Chef actual = underTest.selectChefById(1);
         assertThat(actual).isEqualTo(expected);
-
     }
 
     @Test
     void canSelectAll(){
-        Chef chef = new Chef(1,"Sue Lopez", "suelopez@gotmail.com","Grimsby", 75.00);
+        Chef chef = new Chef(1,"Jennifer Lopez", "suelopez@gotmail.com","Grimsby", 75.00);
        List<Chef> actual = underTest.selectAllChefs();
         List<Chef> expected = new ArrayList<>();
         expected.add(chef);
         assertThat(actual).isEqualTo(expected);
-
     }
 
     @Test
@@ -79,8 +78,5 @@ class ChefDataAccessServiceTest {
         List<Chef> actual= underTest.selectAllChefs();
 
         assertThat(actual).isEqualTo(expected);
-
     }
-
-
 }
