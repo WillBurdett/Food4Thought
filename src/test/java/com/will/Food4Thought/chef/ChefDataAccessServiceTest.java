@@ -1,5 +1,6 @@
 package com.will.Food4Thought.chef;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +28,6 @@ class ChefDataAccessServiceTest {
 
     @Autowired
     private ChefDataAccessService underTest;
-
 
     @Test
     void canInsertChef() {
