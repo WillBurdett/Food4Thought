@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class ChefDataAccessServiceTest {
 
-    @Autowired
-    private JdbcTemplate jdbc;
+  //  @Autowired
+   // private JdbcTemplate jdbc;
 
     @Autowired
     private ChefDataAccessService underTest;
