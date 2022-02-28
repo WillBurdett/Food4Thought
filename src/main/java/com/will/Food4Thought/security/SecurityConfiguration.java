@@ -24,10 +24,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        getHttp().authorizeHttpRequests().antMatchers("/").permitAll();
-                web.ignoring().antMatchers("/user");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        getHttp().authorizeHttpRequests().antMatchers("/").permitAll();
+//                web.ignoring().antMatchers("/user");
+//    }
 }
+
+
 

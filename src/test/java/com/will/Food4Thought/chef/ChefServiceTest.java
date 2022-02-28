@@ -2,6 +2,7 @@ package com.will.Food4Thought.chef;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 
 import java.util.ArrayList;
@@ -77,8 +78,12 @@ class ChefServiceTest {
         Chef actual = underTest.selectChefById(1);
         Chef expected = chef;
 
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(fakeChefDao, times(1)).selectChefById(captor.capture());
+        Integer capturedParameter = captor.getValue();
         // THEN
         verify(fakeChefDao).selectChefById(1);
+        assertEquals(1, capturedParameter);
         assertThat(actual).isEqualTo(expected);
     }
 
