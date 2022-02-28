@@ -20,10 +20,10 @@ public enum Allergies {
 
 
     @JsonCreator
-    public static Allergies fromString(String phoneType) {
-        return phoneType == null
+    public static Allergies fromString(String difficulty) {
+        return difficulty == null
                 ? null
-                : Allergies.valueOf(phoneType.toUpperCase());
+                : Allergies.valueOf(difficulty.toUpperCase());
     }
 
     @JsonValue
